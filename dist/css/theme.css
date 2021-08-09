@@ -1,0 +1,1365 @@
+/* Dark Theme Starts */
+
+/* Footer Starts */
+.dark-theme footer {
+  background: #383535;
+  border: 1px solid #c8c4c4;
+}
+
+/* Footer Ends */
+
+/* Header Starts */
+
+.dark-theme .header-tabsdropdown {
+  background: rgb(57 66 81);
+  box-shadow: 0px 2px 16px 0px rgb(0 0 0 / 10%);
+}
+
+/* Header Ends */
+
+/* Dark Theme Ends */
+
+
+
+
+/* Common CSS Starts */
+
+.viewMoreCC {
+    color: rgb(1, 142, 255);
+  }
+
+  .gr-smoke-pnt5Opacity {
+    background: rgb(33, 43, 54, 0.05);
+  }
+
+  .modal-header {
+    border-bottom: 0px solid #dee2e6 !important;
+  }
+  
+  hr.dot {
+    border-top: .1rem dotted rgba(0, 0, 0, 0.1);
+  }
+
+  hr.dash {
+    border-top: .1rem dashed rgba(0, 0, 0, 0.1);
+  }
+
+  .customListBlueDot>li::before {
+    color: rgb(1, 142, 255);
+  }
+
+  .customListGreyDash>li::before {
+    color: rgb(153, 153, 153);
+  }
+
+  .form-check .checkmark {    
+    border: 1px solid #ced4da;
+    background-color: #ffffff;
+  }
+
+  .checkmark:after {
+    border-style: solid;
+    border-color: #ffffff;
+  }
+
+  input[type="checkbox"].form-check-input:checked~.checkmark {
+    background-color: #018eff;
+    border-color: #018eff;
+  }
+  
+  input[type="radio"].form-check-input:checked~.checkmark {
+    background-color: white;
+    border-color: #018eff;
+  }
+
+  .form-check input[type="radio"]+.checkmark:after {
+    border: 1px solid #018eff;
+    background: #018eff;
+  }
+
+  .custom-hover-dropdown .dropdown-item {
+    color: rgb(99, 115, 129);
+  }
+
+  .custom-hover-dropdown .dropdown-menu {
+    background: rgb(255, 255, 255);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+
+  }
+
+  .custom-hover-dropdown .dropdown-item:hover {
+    background-color: #018eff;
+    color: white;
+  }
+
+  .custom-hover-dropdown .dropdown-toggle {
+    color: rgb(80, 35, 143) !important;  
+    background: rgb(235, 225, 248) !important;
+  }
+
+  .slick-dots li button:before {   
+    background: rgb(1, 142, 255);
+  }
+
+  .Business-Outcomes, .IOJTabs {
+    background-color: #f8f9fa;
+  }
+
+  .filter-btn-tabs .btn-outline-light.active, .filter-btn-tabs .btn-outline-light:hover {
+    border: 1px solid rgb(33, 43, 54) !important;
+  }
+
+  .UserInitial {
+    background: linear-gradient(-225deg, rgb(11, 175, 240) 0%, rgb(1, 142, 255) 54%, rgb(11, 76, 255) 100%);
+    border: 1px solid rgb(255, 255, 255);
+  }
+
+  .BOTabs .btn-secondary-outline.active, .BOTabs .btn-secondary-outline:hover {
+    border: 1px solid rgb(33, 43, 54) !important;
+  }
+
+  .custom-dropdown-search .search-select-list {
+    background: rgb(255, 255, 255);
+    box-shadow: 0px 2px 8px 0px rgb(0 0 0 / 10%);
+
+  }
+
+  .custom-dropdown-search ul li {
+    color: rgb(99, 115, 129);
+  }
+
+  .custom-dropdown-search ul li:hover {
+    background: rgb(244, 246, 248);
+  }
+
+  .custom-dropdown-search .form-check .form-check-label {
+     color: rgb(33, 43, 54);
+  }
+
+  .customselectfilter-footer {
+    background: #f4f6f8;
+  }
+
+  .customselectfilter-footer .btn.btn-outline-secondary {
+    background: #fff;
+    border: 1.5px solid rgb(99, 115, 129);
+  }
+
+  .customselectfilter-footer .btn.btn-outline-secondary:hover {
+    background: rgb(99, 115, 129);
+  }
+  
+  .favouritemodal-filter .fiscalyear-dropdown .custom-dropdown-search {
+    border: 1px solid rgb(145, 158, 171);
+    color: rgb(99, 115, 129);
+  }
+
+  .favouritemodal-filter .fiscalyear-dropdown .custom-dropdown-search:hover{
+    border: 1.5px solid rgb(145, 158, 171);
+  box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.15);
+  }
+
+  .favouritemodal-filter .fiscalyear-dropdown .custom-dropdown-search.custom-dropdown-searchopen {
+    border: 1.5px solid rgb(1, 142, 255);
+    color: rgb(33, 43, 54);
+    background: rgb(244, 251, 255);
+  }
+
+  .searchFilter:after {
+   background: #f9fafb;
+  }
+
+  .searchFilter input[type="search"] {
+    color: rgb(145, 158, 171);    
+    border: 1px solid rgb(223, 227, 232);
+    background: #fff url(../Images/search-filter.svg) no-repeat scroll 20px!important;
+  
+  }
+
+  .popover {
+    border: 1px solid rgba(0, 0, 0, 0) !important;
+    box-shadow: 0px 0px 14px 1px rgba(0, 0, 0, .2) !important;
+  }
+
+  .bs-popover-right>.arrow::before, .bs-popover-auto[x-placement^="right"]>.arrow::before {
+    border-right-color: rgb(0 0 0 / 7%);
+  }
+
+  .favouritemodal-filter .fiscalyear-dropdown .custom-dropdownname span{
+    color: rgb(99, 115, 129);
+  }
+
+  .favouritemodal-filter .fiscalyear-dropdown .custom-dropdown-search.custom-dropdown-searchopen .custom-dropdownname span{
+    color: rgb(33, 43, 54);
+    }
+
+  .lightgrey-bg{
+    background: #f9fafb;
+  }
+
+  .empty-data {  
+    background: rgb(245, 245, 245); 
+  }
+
+  .empty-data p{
+    color: rgb(99, 115, 129);
+  }
+
+  .viewmore-btn .btn {
+    background: rgb(1, 142, 255);
+    color: rgb(255, 255, 255);
+  }
+
+  .no-filter-disable{
+    border: 1.5px solid rgb(145, 158, 171);  
+    color: rgb(99, 115, 129);
+  }
+
+  .unauthorized-block{   
+      color: #fff;      
+  }
+  
+  ._preloader_overlaycontent{
+    color: #018eff;
+  }
+
+  ._preloader_overlayoverlay {
+	color: #637381 !important;
+	background-color: rgba(255, 255, 255, 0.7) !important;
+  }
+  ._preloader_ovelayspinner {
+	background-color: rgba(99, 115, 129, 0.2) !important;
+  }
+
+  .mainContainerCC {
+    box-shadow: 0px 0px 8px 8px rgb(0 0 0 / 7%);
+  }
+  
+  .unauthorized-block{
+    box-shadow: 0px 3px 22px 0px rgb(33 43 54 / 40%);
+  }
+
+/* Common CSS Ends */
+
+/* Custom CSS Starts */
+
+::-webkit-scrollbar-track {
+    background: rgb(255, 255, 255);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(223, 227, 232);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #979797;
+}
+
+.custom-tooltip {
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1) !important;
+}
+
+.custom-tooltip span {
+    color: rgb(255, 255, 255);
+}
+
+.initiatvecommon-heading h4 {
+    color: rgb(33, 43, 54);
+}
+
+
+.initiatvecommon-heading .grey-text {
+    color: rgb(99, 115, 129) !important;
+}
+
+.header-tabs .navbar-nav .nav-link {
+    color: rgb(255, 255, 255) !important;
+}
+
+.header-tabs .navbar-nav .nav-link.active, .header-tabs .navbar-nav .nav-link:hover {
+  
+    color: #fff;
+}
+
+.header-tabs .navbar-nav .nav-link.active:after{
+    background-color: #018eff;
+}
+
+.dropdown-content {
+   background-color: #f1f1f1;
+}
+
+.dropdown-content a {
+    color: black;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.notification-cc .badge {
+    background-color: red;
+    color: white;
+}
+
+[data-initials]:before {
+    background: #099bdd;
+    color: white;
+}
+
+.backdroppopover {
+   background-color: #80808047;
+}
+
+/* Custom CSS Ends */
+
+/* Footer CSS Starts */
+
+
+footer{
+    background: #fff;
+}
+
+.footer-links ul li a,
+.footer-container p{
+color: rgb(145, 158, 171);
+}
+
+.termsinfo-modal h3{
+    color: rgb(1, 142, 255);
+}
+
+.termsinfo-modal .modal-content{
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(223, 227, 232);
+    box-shadow: 0px 2px 64px 0px rgba(0, 0, 0, 0.15);
+
+}
+
+.termsinfo-modal p{
+    color: rgb(33, 43, 54);
+}
+
+/*Footer CSS Ends */
+
+/*Header CSS Stars */
+
+.client-cockpit-logo::after {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.header-notification-modal .modal-content {
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(223, 227, 232);
+    box-shadow: 0px 2px 64px 0px rgba(0, 0, 0, 0.15);
+}
+
+.header-notification-modal .modal-header{
+    border-bottom: 1px dashed rgb(196, 205, 213) !important;
+}
+
+
+.userprofile-img[data-initials]:before {
+    border: 1px solid rgb(223, 227, 232);
+ 
+}
+
+.clientinfo-modal .modalheader-block{
+    border-bottom: 1px solid rgb(227, 227, 227) !important;
+}
+
+.clientinfo-modal .modal-dialog {
+    background: rgb(255, 255, 255);
+}
+
+.header-leftmenu ul li a {
+    color: rgb(33, 43, 54) !important;
+}
+
+.header-leftmenu ul li a:hover{
+    color: #0891ff !important;
+}
+
+.header-leftmenu ul li.submenu-list li a:hover, li.submenu-list a:hover{
+    color: #0891ff !important;
+}
+
+.userprofile-info p {
+    color: rgb(33, 43, 54);
+}
+
+.header-leftmenu .comingsoon-tag {
+    color: rgb(161, 0, 255);
+}
+
+.submenu-list .sub-menu.is-open{
+    border-bottom: 1px solid rgb(227, 227, 227);
+}
+
+.submenu-list ul li a {
+    color: rgb(33, 43, 54);
+}
+
+.header-tabsdropdown {
+    background: rgb(33, 43, 54);
+    box-shadow: 0px 2px 16px 0px rgb(0 0 0 / 10%);
+
+}
+
+.header-tabs .navbar-nav .header-tabsdropdown ul li .nav-link {
+    color: rgb(223, 227, 232) !important;
+}
+
+.changeclient-block h6 {
+    color: rgb(33, 43, 54);
+}
+
+
+.clientchange-modal .modal-dialog{
+   background: rgb(255, 255, 255);
+}
+
+.clientchange-modal .header-search h4,
+.clientchange-modal .header-search h4 span{
+     color: rgb(33, 43, 54);
+}
+
+.clientchange-modal h6{
+    color: rgb(99, 115, 129);
+}
+
+.client-listing .card{
+    background: rgb(255, 255, 255);
+}
+
+.client-listing .card-title {
+    color: rgb(33, 43, 54);
+}
+
+.client-listing .card-footer{
+    background-color: #fff;
+}
+
+.client-listing .card-footer p{
+    color: rgb(99, 115, 129);
+}
+
+.client-listing .offering-count {
+    background: #a100ff;
+    color: #fff;
+}
+
+.client-listing .favourite-button {
+    color: #c4cdd5;
+}
+
+button.favorite-button i.active {
+    color: #ffc82c;
+  }
+
+  .client-listing .card:hover:after {    
+    background: -webkit-gradient(linear,left top,left bottom,from(#a100ff),to(#00baff));
+    background: -webkit-linear-gradient(#a100ff,#00baff);
+    background: linear-gradient(#a100ff,#00baff);    
+    box-shadow: 0 2px 8px 0 rgb(33 43 54 / 10%);
+}
+
+  .client-listing .favourite-button.active {
+    color: #ffc82c;
+  }
+
+  .UI-modal-box .modal-content{   
+    background: rgb(249, 250, 251);
+  }
+
+  .UI-modal-box .modal-content .close {
+    color: rgb(255, 255, 255);
+  }
+
+  #UI-button{
+    color: rgb(33, 43, 54);
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(223, 227, 232);
+  }
+
+  .UI-button .dropdown-menu{
+    background: rgb(255, 255, 255);
+  }
+
+  .UI-button .dropdown-item:hover {
+    background: rgb(1, 142, 255);
+    color: rgb(255, 255, 255);
+  }
+
+  .UI-button .dropdown-item{  
+    color: rgb(99, 115, 129);
+  }
+
+  .UI-modal-body .okay-btn{
+    background: rgb(1, 142, 255);
+    color: rgb(255, 255, 255);   
+  }
+
+  .UI-modal-body .not-btn{
+     background: rgb(255, 255, 255);
+     border: 1.5px solid rgb(1, 142, 255);
+     color: rgb(1, 142, 255);
+  }
+
+/*Header CSS Ends */
+
+
+/*Index CSS Stars */
+
+.navBar ul .active, .navBar ul a:hover{
+    background: #FFF;
+    color: #222;
+  }
+
+  .navBar ul a{
+    color: #999;
+  }
+
+  .navBar ul{
+    background-color: #333;
+    border: 5px solid #333333;
+    
+  }
+
+/*Index CSS Ends */
+
+/*App CSS Starts */
+
+body{
+    color: rgb(33, 43, 54);
+  }
+  .font-color-white{
+    color: #fff;
+  }
+
+  .App-link {
+    color: #61dafb;
+  }
+
+  .App-header {
+    background-color: #282c34;
+    color: white;
+  }
+
+  .custom-backdropstyle{
+    background-color: #fff  !important;
+  }
+
+/*App CSS Ends */
+
+
+/*Overview CSS Stars */
+
+.mainContainerCC-overview {   
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.1);
+}
+
+.deployedinitiatives .shadow-sm {
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 2px 8px 0px rgba(33, 43, 54, 0.1) !important;
+}
+
+.records-accordion .card-header .card-link {
+  color: rgb(161, 0, 255);
+}
+
+.records-accordion .card-link:after{
+  color: #212b36;
+}
+
+.select-filters .select-custom select {
+  color: rgb(33, 43, 54);
+  border: 1px solid rgb(151, 151, 151);
+
+}
+
+.summary-header h4 {
+  color: rgb(33, 43, 54);
+}
+
+.summary-header .filtered-value span {
+  color: rgb(33, 43, 54);
+}
+
+.summary-body #filter-accordion .card-header {
+  background: #f9fafb;
+}
+
+.summary-body #filter-accordion .card-link {
+  color: rgb(33, 43, 54);
+}
+
+.record-indicate h4 {
+  color: rgb(33, 43, 54);
+}
+
+.record-indicate .record-digit {
+  color: rgb(1, 142, 255);
+}
+
+.record-indicate .record-digit .record-digit-text {
+  color: rgb(33, 43, 54);
+}
+
+.filtered-records .score-status{
+  color: rgb(33, 43, 54);
+}
+
+.filtered-records .pmm-recordsrow .record-divider{
+  background: rgb(255, 255, 255);
+}
+
+.AccentureKeyFacts{
+  border-left: 1px solid #dfe3e8;
+}
+
+.key-facts-modal .modal-content{  
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 2px 64px 0px rgba(0, 0, 0, 0.1);
+}
+
+.doughnutlayout-col h5 {
+  color: rgb(33, 43, 54);
+}
+
+.doughnutchart-middletext span{
+  color: rgb(33, 43, 54);
+}
+
+.legend-marker {
+  background: rgb(38, 193, 201);
+}
+
+.legend-marker.purplebg {
+  background: rgb(161, 0, 255);
+}
+
+.legend-marker.orangebg {
+  background: rgb(244, 147, 66);
+}
+
+.doughnutlegend-values li p {
+  color: rgb(99, 115, 129);
+}
+
+.fiscalyear-dropdown .custom-dropdown-search {
+  background: rgb(255, 255, 255);
+  border: 1.5px solid rgb(1, 142, 255); 
+  color: rgb(1, 142, 255);
+}
+
+.favouriteapp-heading h3 {
+  color: rgb(33, 43, 54);
+}
+
+.favouriteapp-heading h3 span {   
+  color: rgb(33, 43, 54);
+}
+
+.favouriteapp-heading .seeall-link {
+  color: rgb(1, 142, 255);
+  border-left: 1px solid #637381;
+
+}
+
+.favouriteapp-list h4 {
+  color: rgb(1, 142, 255);
+}
+
+.favouriteapp-list p {
+  color: rgb(33, 43, 54);
+}
+
+.view-summary {
+  color: #018eff;
+}
+
+.favouritesummary-modal .modal-content{
+   background: rgb(255, 255, 255);
+   box-shadow: 0px 2px 64px 0px rgba(0, 0, 0, 0.1);
+}
+
+.modaltitle-img h5 {
+  color: rgb(33, 43, 54);
+}
+
+.favouritemodal-filter p {
+  color: rgb(33, 43, 54);
+}
+
+.favouritemodal-filter {
+  border-bottom: 1px solid #c4cdd5;
+}
+
+.summary-outcomes .outcome-card h6 {
+  color: rgb(33, 43, 54);
+}
+
+.summary-outcomes .outcome-card .outcome-digit {
+  color: rgb(1, 142, 255);
+}
+
+.summary-outcomes .outcome-digit .outcome-digittext {
+  color: rgb(33, 43, 54);
+}
+
+.summary-outcomes .outcome-card p {
+  color: rgb(123, 142, 152);
+}
+
+.highlights-for-you{
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.1);
+
+}
+
+.highlights-for-you .img-holder{
+  box-shadow: 0px 2px 16px 0px rgb(0 0 0 / 10%);
+}
+
+.HighlightsForYou .carousel-indicators li {
+  background: rgb(1, 142, 255);
+}
+
+.HighlightsForYou .carousel-indicators li.active {
+  background: rgb(1, 142, 255);
+}
+
+.highlights-modal .modal-content{
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 2px 64px 0px rgba(0, 0, 0, 0.1);
+}
+
+.highlights-modal .carousel-item h6 {
+  color: rgb(145, 158, 171);
+}
+
+.highlights-modal .carousel-item h3 {
+  color: rgb(33, 43, 54);
+}
+
+.highlights-modal .carousel-item p {
+  color: rgb(99, 115, 129);
+}
+
+.image-section iframe{
+  border-bottom: 41px solid black;    
+}
+
+.highlights-modal .keycontacts-list h6 {
+  color: rgb(33, 43, 54);
+}
+
+.keycontacts-list li {
+  color: rgb(1, 142, 255);
+  border-right: 1px solid #dfe3e8;
+
+}
+
+.keycontacts-list li {
+  color: rgb(1, 142, 255); 
+  border-right: 1px solid #dfe3e8;
+}
+
+.csupdated-info {
+  border-bottom: 1px solid #c4cdd5;
+}
+
+.csupdated-info p {
+  color: rgb(33, 43, 54);
+}
+
+.header-tabsdropdown ul li a {
+  color: rgb(223, 227, 232);
+}
+
+.doughnut-layout .empty-data{
+   border: 12px solid rgb(201, 201, 201);
+}
+
+.favouriteBO-list ul li {
+  border-bottom: 1px solid rgb(223, 227, 232);
+}
+
+.favouriteBO-list ul li h4 {
+  color: rgb(33, 43, 54);
+}
+
+.tooltipellipsis-text:hover .tooltipellipsis-hovertext{
+  background: rgb(33, 43, 54);
+  color: rgb(255, 255, 255);
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1) ;
+}
+
+.tooltipellipsis-text:hover .tooltipellipsis-hovertext::after{
+  border-top: 13px solid transparent;
+  border-right: 26px solid #212b36;
+  border-bottom: 13px solid transparent;
+}
+
+.seeall-link span a{ 
+  color: rgb(1, 142, 255);
+}
+
+.favouriteBO-list ul li p {
+  color: rgb(99, 115, 129);
+}
+
+.AccentureKeyFacts .custom-tooltip{
+  background: rgb(0, 0, 0);
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+}
+
+.AccentureKeyFacts .custom-tooltip p{
+  color: rgb(255, 255, 255);
+}
+
+.record-heading-tooltip {
+  background: #fff;
+  border: 1px solid #919eab;
+}
+
+
+/*Overview CSS Ends */
+
+
+/*FnD CSS Starts */
+
+
+.criticaloutcome-block{
+  background: rgba(33, 43, 54, 0.05);
+}
+
+.criticaloutcome-card{
+  border-top: 1px solid #919eab;
+}
+
+.criticaloutcome-block h5{
+  color: rgb(33, 43, 54);
+}
+
+.criticaloutcome-heading p{
+  color: rgb(33, 43, 54);
+}
+
+.criticaloutcome-card h6{
+  color: rgb(33, 43, 54);
+}
+
+.criticaloutcome-status span{
+  color: rgb(33, 43, 54);
+}
+
+.criticaloutcome-status p{
+  color: rgb(33, 43, 54);
+}
+
+.functions-indelivery-tab .btn-outline-light.active,.functions-indelivery-tab .btn-outline-light:hover{
+  border: 1px solid rgb(33, 43, 54) !important;
+}
+
+.FunctionsInDeliveryTab .open-btn{
+  color: rgb(255, 255, 255);
+}
+
+.sub-offering-tile-card {
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.1);
+}
+
+.sub-offering-heading1{    
+  color: rgb(145, 158, 171);
+}
+
+.sub-offering-heading2{    
+  color: rgb(0, 121, 255);
+}
+
+.sub-offering-tile-item .legends .legends-value{
+  color: rgb(33, 43, 54);
+}
+
+.sub-offering-tile-item .btn{ 
+  color: rgb(255, 255, 255);
+}
+
+.sub-offering-tile-item .legend-marker-tooltip{
+   background: rgb(0, 0, 0);
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+}
+
+.sub-offering-tile-item .legend-marker-tooltip .legende-marker-text{
+   color: rgb(255, 255, 255);
+}
+
+.empty-critical-outcomes {
+  background: rgba(104, 131, 160, 0.05);
+}
+
+.team-modal-box .modal-content{
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(223, 227, 232);
+  box-shadow: 0px 2px 64px 0px rgba(0, 0, 0, 0.15);
+}
+
+.team-modalbox-text .name{
+  color: rgb(99, 115, 129);
+}
+
+.team-modalbox-text .type{
+  color: rgb(145, 158, 171);
+}
+
+.team-modalbox-text .mail{    
+  color: rgb(145, 158, 171);
+}
+
+.team-modal-box .border-line{
+  border-bottom: 1px solid #e0e5e9;
+}
+
+.team-modal-box .img{
+  border: 2px solid rgb(255, 255, 255);
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+}
+
+.popoverNotification .popover-body .no-data{       
+  color: rgb(99, 115, 129);
+}
+
+.popoverNotification .bs-popover-auto[x-placement^="right"]>.arrow::before {
+  border-right-color: rgb(0 0 0 / 0%);
+}
+
+.nocritical-outcomedata p{
+  color: rgb(145, 158, 171);
+}
+
+/*FnD CSS Ends */
+
+
+/*BO CSS Stars */
+
+.metriccard-list {
+  background: rgb(255, 255, 255);
+}
+
+.metriccard-list.redColor:hover .metriccard-leftsection{
+  background: linear-gradient(-225deg, rgb(242, 178, 192) 0%, rgb(213, 0, 47) 52%, rgb(170, 0, 37) 100%);
+border-radius: 8px 0px 0px 8px;
+}
+.metriccard-list.greenColor:hover .metriccard-leftsection{
+  background: linear-gradient(-225deg, rgb(184, 214, 158) 0%, rgb(126, 195, 68) 51%, rgb(126, 195, 68) 100%);
+border-radius: 8px 0px 0px 8px;
+}
+.metriccard-list.amberColor:hover .metriccard-leftsection{
+  background: linear-gradient(-225deg, rgb(255, 197, 139) 0%, rgb(244, 147, 66) 50%, rgb(192, 87, 23) 100%);
+border-radius: 8px 0px 0px 8px;
+}
+.metriccard-list.greyColor:hover .metriccard-leftsection{
+  background: linear-gradient(-45deg, rgb(99, 115, 129) 0%, rgb(145, 158, 171) 100%);
+border-radius: 8px 0px 0px 8px;
+}
+
+.shimmer-effect h4{
+  background: linear-gradient(to right, #d0d0d1 4%, #bbb9b9 25%, #cbcbcc 36%);
+}
+
+.metriccard-list h4{
+  color: rgb(145, 158, 171);
+}
+
+.metriccard-list.redColor h4{
+  color: rgb(213, 0, 47);
+}
+.metriccard-list.greenColor h4{
+  color: rgb(82, 134, 38);
+}
+.metriccard-list.amberColor h4{
+  color: rgb(192, 87, 23);
+}
+.metriccard-list.greyColor h4{
+  color: #919eab;
+}
+
+.metriccard-list .metric-description{
+  color: rgb(33, 43, 54);
+}
+
+.metriccard-list.redColor:hover h4,
+.metriccard-list.redColor:hover .metric-description,
+.metriccard-list.greenColor:hover h4,
+.metriccard-list.greenColor:hover .metric-description,
+.metriccard-list.amberColor:hover h4,
+.metriccard-list.amberColor:hover .metric-description,
+.metriccard-list.greyColor:hover h4,
+.metriccard-list.greyColor:hover .metric-description{
+  color: #fff;
+}
+
+.benchmark-listtext p{
+  color: rgb(99, 115, 129);
+}
+
+.benchmark-listtext span{
+  color: rgb(99, 115, 129);
+}
+
+.metric-cards-text {
+  color: rgb(33, 43, 54);
+}
+
+.overview-selected-bg {
+  background: rgba(33, 43, 54, 0.05);
+}
+
+
+.Metric-Cards .carousel-indicators li {
+  background: rgb(1, 142, 255);
+}
+
+.Metric-Cards .carousel-indicators li.active {
+  background: rgb(1, 142, 255);
+}
+
+.Business-Outcomes {
+  background-color: #f8f9fa;
+}
+
+.Metric-Cards .metriccard-count span{
+  color: rgb(33, 43, 54);
+}
+
+
+.metriccard-modalbox .modal-content{
+  background: rgb(249, 250, 251);
+  box-shadow: 0px 2px 16px 0px rgb(0 0 0 / 10%);
+}
+
+.metriccards-dropdownsection .dropdown-toggle,
+.metriccard-datepicker{
+border: 1.5px solid rgb(1, 142, 255) !important;
+background: #fff  !important;
+color: rgb(1, 142, 255) !important;
+}
+
+.calenderPopover {
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(223, 227, 232);
+  box-shadow: 0px 2px 64px 0px rgba(0, 0, 0, 0.1);
+}
+
+.calenderPopover.popover{
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(223, 227, 232) !important;
+  box-shadow: 0px 2px 64px 0px rgb(0 0 0 / 10%) !important;
+}
+
+.calenderPopoverSpan {
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(223, 227, 232);
+}
+
+.calenderPopoverSpan:hover, .calenderPopoverSpanActive {
+  background: rgba(1, 142, 255, 0.04);
+  border: 1px solid rgb(1, 142, 255);
+}
+
+.calenderPopover .react-datepicker {
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(209, 217, 222);
+
+}
+
+.calenderPopover .react-datepicker__month .react-datepicker__month-text {
+  background: rgba(86, 182, 227, 0.05);
+  border: 1px solid rgba(86, 182, 227, 0.3);
+  color: #52657f;
+}
+
+.calenderPopover .react-datepicker__month .react-datepicker__month-text:hover,
+.calenderPopover .react-datepicker__month .react-datepicker__month--selected {
+  background: rgb(1, 142, 255);
+  color:#fff;
+  border: 1px solid rgba(86, 182, 227, 0.3);
+}
+
+.calenderPopover .react-datepicker__header {
+  background: rgb(251, 252, 252);
+  color: #354152;
+
+}
+
+.calenderPopover .popover-footer {
+  background: rgb(249, 250, 251);
+  border-radius: 0px 0px 16px 16px;
+  border: 1px solid rgb(223, 227, 232);
+
+  }
+
+  .CalenderDatepickerLabel {
+    color: rgb(99, 115, 129);
+  }
+
+  .CalenderDatepickerDate {
+    color: rgb(33, 43, 54);
+  }
+
+  .metriccards-chartsection{
+    background: rgb(255, 255, 255);
+    box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .metriccards-chartlegend ul li{
+     color: rgb(33, 43, 54);
+    }
+  
+    .metriccards-chartlegend .lowerquartile-legendvalue{
+      color: #d5002f;
+    }
+
+    .metriccards-chartlegend .median-legendvalue{
+      color: #ffc82c;
+    }
+
+    .metriccards-chartlegend .upperquartile-legendvalue{
+      color: #7ec344;
+    }
+
+    .chartlegend-dropdown .dropdown-toggle{
+      background: rgb(255, 255, 255) !important;
+      border: 1px solid rgb(196, 205, 213) !important;
+      color: rgb(99, 115, 129) !important;
+    }
+
+    .chartlegend-dropdown .dropdown-menu{
+      background: rgb(255, 255, 255);
+      box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+      }
+
+    .chartlegend-dropdown .dropdown-menu a,
+    .metriccards-dropdownsection .dropdown-menu a{
+      color: rgb(99, 115, 129);
+    }
+
+    .chartlegend-dropdown .dropdown-menu a:hover,
+.metriccards-dropdownsection .dropdown-menu a:hover{
+  background: rgb(1, 142, 255);
+  color: #fff;
+}
+
+.calenderPopover .react-datepicker__navigation--previous {
+  border: 1px solid rgb(209, 217, 222);
+}
+
+.calenderPopover .react-datepicker__navigation--next {
+  border: 1px solid rgb(209, 217, 222);
+}
+
+.reference-heading h3{
+  color: rgb(33, 43, 54);
+}
+
+.referencelist-card h4{
+  color: rgb(1, 142, 255);
+}
+
+.referencelist-card p{
+  color: rgb(33, 43, 54);
+}
+
+.overview-card h4{
+  color: rgb(1, 142, 255);
+}
+
+.overview-card h4{
+  color: rgb(1, 142, 255);
+}
+
+.overview-card p{
+  color: rgb(33, 43, 54);
+}
+
+.custom-BOtooltip span{
+  color: rgb(99, 115, 129);
+}
+
+.custom-BOtooltip.show{
+  background: rgb(249, 250, 251);
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+}
+
+.metriccards-chartsection .empty-data p{
+  color: rgb(145,158,171) !important;
+  }
+
+     
+/*BO CSS Ends */
+
+
+/*IOJ CSS Starts */
+
+.legend-dot .blue-dot-col{
+  color: #26c1c9;
+}
+.legend-dot .orange-dot-col{
+  color: #f49342;
+}
+.legend-dot .grey-dot-col{
+  color: #919eab;
+}
+
+.iojfilter-tabs .nav-tabs .nav-link{
+  color: rgb(33, 43, 54);
+}
+
+.iojfilter-tabs .nav-tabs .nav-link.active,
+.iojfilter-tabs .nav-tabs .nav-link:hover{
+ 
+  color: black;
+}
+
+.iojfilter-tabs .nav-tabs .nav-link.active:after {
+  background-color: #018eff;
+}
+
+.iojfilter-tabs .nav-tabs{
+  border-bottom: 1px solid #dfe3e8;
+}
+
+.foundationtile-card{
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.1);
+}
+
+.ioj-initiative-modal .para{
+  color: rgb(0, 0, 0);
+}
+
+.ioj-initiative-modal-box .modal-content{
+  background: rgb(249, 250, 251);
+  box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.1);
+}
+
+.ioj-initiative-modal .unordered-list  .active{
+  box-shadow: 0 0 0 12px #e7eaf1;  
+}
+
+.ioj-initiative-modal .unordered-list .grey-dot {
+  background: rgb(145, 158, 171);
+}
+
+.ioj-initiative-modal .line {  
+  border-bottom: 2.5px solid #919eab;
+}
+
+.ioj-modal .blue{
+  background: rgb(224, 243, 244);
+  color: rgb(38, 193, 201);
+ }
+ .ioj-modal .orange {
+  background: rgb(255, 222, 128) !important;
+  color: rgb(192, 87, 23) !important;
+}
+.ioj-modal .red {
+  background: rgb(251, 180, 181)!important;
+  color: rgb(213, 0, 47)!important;
+}
+.ioj-modal .grey {
+  background: rgb(145, 158, 171)!important;
+  color: rgb(20, 51, 82)!important;
+}
+
+.iojtilecard-statusname{
+  color: rgb(38, 193, 201);
+}
+
+.iojtilecard-statusname.inflight-status{
+  color: rgb(244, 147, 66);
+}
+.iojtilecard-statusname.inconcept-status{
+  color: rgb(145, 158, 171);
+}
+.iojtilecard-statusname.delivered-status{
+  color: rgb(38, 193, 201);
+}
+
+.iojtilecard-name h4{
+  color: rgb(0, 121, 255);
+}
+
+.iojtilecard-description p{
+  color: rgb(33, 43, 54);
+}
+
+.iojtilecard-deliveryinfo span{
+  color: rgb(145, 158, 171);
+}
+
+.iojtilecard-morebtn span{
+  background: rgb(1, 142, 255);
+}
+
+.iojtilecard-morebtn span svg{
+  color: #fff;
+}
+.iojfilter-tabs .empty-data{
+  background: transparent !important;
+}
+
+/*IOJ CSS Ends */
+
+/* Groove class Starts */
+
+.hero80-black-midnight,.hero80-medium-midnight,.hero64-black-midnight,.hero64-medium-midnight,.hero56-black-midnight,.hero56-medium-midnight,.hero48-black-midnight,.hero48-medium-midnight,.hero32-black-midnight,.hero32-medium-midnight,.header28-semibold-midnight,.header24-semibold-midnight,.header20-semibold-midnight,.header18-semibold-midnight,.header16-semibold-midnight,.header14-semibold-midnight,
+
+.bodytext24-medium-midnight,.bodytext24-regular-midnight,.bodytext20-medium-midnight,.bodytext20-regular-midnight,.bodytext18-medium-midnight,.bodytext18-regular-midnight,.bodytext16-medium-midnight,.bodytext16-regular-midnight,.bodytext14-medium-midnight,.bodytext14-regular-midnight,.bodytext12-medium-midnight,.bodytext12-regular-midnight,
+
+.label24-medium-midnight,.label24-regular-midnight,.label20-medium-midnight,.label20-regular-midnight,.label18-medium-midnight,.label18-regular-midnight,.label16-medium-midnight,.label16-regular-midnight,.label14-medium-midnight,.label14-regular-midnight,.label12-medium-midnight,.label12-regular-midnight,.label11-medium-midnight,.label11-allcaps-midnight,.label10-allcaps-midnight
+{
+  color: #212b36;
+
+}
+
+.hero80-black-opsblue,.hero80-medium-opsblue,.hero64-black-opsblue,.hero64-medium-opsblue,.hero56-black-opsblue,.hero56-medium-opsblue,.hero48-black-opsblue,.hero48-medium-opsblue,.hero32-black-opsblue,.hero32-medium-opsblue,
+
+.header28-semibold-opsblue,.header24-semibold-opsblue,.header20-semibold-opsblue,.header18-semibold-opsblue,.header16-semibold-opsblue,.header14-semibold-opsblue,
+
+.label24-medium-opsblue,.label24-regular-opsblue,.label20-medium-opsblue,.label20-regular-opsblue,.label18-medium-opsblue,.label18-regular-opsblue,.label16-medium-opsblue,.label16-regular-opsblue,.label14-medium-opsblue,.label14-regular-opsblue,.label12-medium-opsblue,.label12-regular-opsblue,.label11-medium-opsblue,.label11-allcaps-opsblue,.label10-allcaps-opsblue
+{
+  color: #008eff;
+}
+
+ .bodytext24-medium-slate,.bodytext24-regular-slate,.bodytext20-medium-slate,.bodytext20-regular-slate,.bodytext18-medium-slate,.bodytext18-regular-slate,.bodytext16-medium-slate,.bodytext16-regular-slate,.bodytext14-medium-slate,.bodytext14-regular-slate,.bodytext12-medium-slate, .bodytext12-regular-slate,
+
+.label24-medium-slate,.label24-regular-slate,.label20-medium-slate,.label20-regular-slate,.label18-medium-slate,.label18-regular-slate,.label16-medium-slate,.label16-regular-slate,.label14-medium-slate,.label14-regular-slate,.label12-medium-slate,.label12-regular-slate,.label11-medium-slate,.label11-allcaps-slate,.label10-allcaps-slate
+{
+  color: #637381;
+
+}
+
+ .label24-medium-silver,.label24-regular-silver,.label20-medium-silver,.label20-regular-silver,.label18-medium-silver,.label18-regular-silver,.label16-medium-silver,.label16-regular-silver,.label14-medium-silver,.label14-regular-silver,.label12-medium-silver,.label12-regular-silve,.label11-medium-silver,.label11-allcaps-silver,.label10-allcaps-silver
+{
+  color: #919eab;
+}
+
+
+ .header28-semibold-white,.header24-semibold-white,.header20-semibold-white,.header18-semibold-white,.header16-semibold-white,.header14-semibold-white,
+ 
+ .bodytext24-medium-white,.bodytext24-regular-white,.bodytext20-medium-white,.bodytext20-regular-white,.bodytext18-medium-white,.bodytext18-regular-white,.bodytext16-medium-white,.bodytext16-regular-white,.bodytext14-medium-white,.bodytext14-regular-white,.bodytext12-medium-white,.bodytext12-regular-white,
+ 
+ .label24-medium-white,.label24-regular-white,.label20-medium-white ,.label20-regular-white,.label18-medium-white,.label18-regular-white,.label16-medium-white,.label16-regular-white,.label14-medium-white,.label14-regular-white,.label12-medium-white,.label12-regular-white,.label11-medium-white,.label11-allcaps-white,.label10-allcaps-white
+  {
+    color: #ffffff;
+  }
+
+
+ /* Groove class Ends */
+
+

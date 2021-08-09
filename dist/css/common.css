@@ -1,0 +1,334 @@
+/* SVM CSS Starts */
+
+.dropdown-section{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  }
+  
+  .dimension-card{
+  height: 140px;
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  }
+  
+  .dimension-card:hover{
+  box-shadow: 0px 2px 48px 0px rgba(33, 43, 54, 0.25);
+  }
+  
+  .dimension h2{
+  color: rgb(45, 58, 75);
+  font-size: 18px;
+  font-family: Graphik-Semibold;
+  font-weight: 600;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-left: -1rem;
+  }
+  
+  .dimension-card h4{
+  color: rgb(176, 86, 161);
+  font-size: 28px;
+  font-family: Graphik-Semibold;
+  font-weight: 600;
+  line-height: 28px;
+  }
+  
+  .dimension-card h4 span{
+  color: rgb(176, 86, 161);
+  font-size: 16px;
+  font-family: Graphik-Semibold;
+  font-weight: 600;
+  line-height: 20px;
+  }
+  
+  .dimension-card p{
+  color: rgb(99, 115, 129);
+  font-size: 12px;
+  font-family: Graphik-Regular;
+  font-weight: normal;
+  line-height: 16px;
+  }
+  
+  .svm-key-btn{
+  color: rgb(1, 142, 255);
+  font-size: 11px;
+  font-family: Graphik-Medium;
+  font-weight: 500;
+  line-height: 11px;
+  border: 1px solid rgb(1, 142, 255);
+  background-color: rgb(1, 142, 255,5%);
+  transform: rotate(90deg);
+  border-radius: 0 0 4px 4px;
+  padding: 0.5rem ;
+  position: absolute;
+  right: -22px;
+  margin-top: 6.5rem;
+  }
+  
+  .svm-key-btn .minimize-icon{
+  transform: rotate(90deg);
+  margin-right: 0.7rem;
+  }
+  
+  .dropdown-collapse{
+  background: rgb(231, 234, 238);
+  border-radius: 0px 0px 4px 4px;
+  color: rgb(99, 115, 129);
+  font-size: 12px;
+  font-family: Graphik-Regular;
+  font-weight: normal;
+  line-height: 20px;
+  padding: 0.7rem;
+  margin-left: 2rem;
+  }
+  
+  .dropdown-section .custom-hover-dropdown{
+  height: 34px;
+  }
+  
+  .dimension-section{
+  margin-right: 1.8rem;
+  }
+  
+  
+  .dropdown-section .custom-hover-dropdown .dropdown-item{
+  display: flex;
+  justify-content: space-between;
+  padding-left: 1.8rem !important;
+  white-space: initial;
+  word-break: break-word;
+  }
+  
+  .dropdown-section .custom-hover-dropdown .dropdown-menu{
+     max-width: 343px;
+     width: max-content;
+  }
+  
+  .dropdown-section .custom-hover-dropdown .dropdown-item .right-white,.dropdown-section .custom-hover-dropdown .dropdown-item:hover .right-black{
+  display: none;
+  }
+  
+  .dropdown-section .custom-hover-dropdown .dropdown-item:hover .right-white{
+  display: inline;
+  }
+  
+  .dropdown-section .right-white, .dropdown-section .right-black{
+  margin-left: -1rem;
+  
+  }
+  
+  .dropdown-custom-tooltip{
+  width: 193px;
+  height: 52px;
+  background: rgb(21, 24, 27) !important;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 16px !important;
+  color: rgb(255, 255, 255) !important;
+  font-size: 14px !important;
+  font-family: Graphik-Medium;
+  font-weight: 500;
+  text-align: center;
+  line-height: 26px;
+  padding: 12px 8px !important;
+  margin-left: 10px !important;
+  }
+  
+  .maximize-icon{
+  position: absolute;
+  cursor: pointer;
+  right: 5%;
+  margin-top: 3.5rem;
+  z-index: 1;
+  }
+  
+  .list-card{
+  height: 48px;
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  }
+  
+  .dimension-collapse-card{
+  background: rgb(255, 255, 255);
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+  }
+  
+  .svm-dough-nut-chart{
+  max-height: 500px !important; 
+  margin-left: -0.4rem;
+  }
+  
+  .svm-dough-nut-chart .recharts-surface{
+    height: 1000px !important;
+  }
+  
+  .svm-bar-chart{
+    height: 120px;
+  }
+  
+  .details-view-section .status-list ul {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0;
+  list-style-type: none;
+  }
+  
+  .details-view-section .status-list ul li{
+  display: flex;
+  align-items: center;
+  }
+  
+  .details-view-section .status-list ul li:first-child {
+  margin-left: 0;
+  margin-right: 2rem;
+  }
+  
+  .dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  margin-right: 0.7rem;
+  }
+  
+  .dot-purple {
+  background: rgb(117, 0, 192);
+  }
+  
+  .dot-awaitingApproval{
+  background: rgb(133, 215, 255);
+  
+  }
+  
+  .project-detail-tabs.nav-tabs .nav-link.active,.project-detail-tabs.nav-tabs .nav-item.show .nav-link{  
+  color: rgb(161, 0, 255) !important;
+  }
+  
+  .project-detail-tabs.nav-tabs .nav-link.active:after{
+  background: rgb(161, 0, 255) !important;
+  width: 140% !important;
+  left: -18%;
+  }
+  
+  .project-detail-tabs.nav-tabs,.project-detail-tabs.nav-tabs .nav-link{
+  margin-top: 8px !important;
+  }
+  
+  .project-detail-tabs .nav-link {
+  margin: 0.5rem 1.5rem;
+  }
+  
+  .project-detail-tabs button>span:first-child {
+  text-transform: initial;
+  min-width: max-content;
+  padding: 0 10px !important;
+  }
+  
+  .project-detail-tabs button span {
+  padding: 0;
+  text-align: center;
+  word-wrap: break-word;
+  display: block;
+  max-width: 200px;  
+  color: rgb(161, 0, 255);
+  font-size: 12px;
+  font-family: Graphik-Medium;
+  font-weight: 500;
+  line-height: 14px;
+  }
+  
+  .project-detail-tabs .MuiTab-root{
+  padding: 0 !important;
+  min-width: 88px !important;
+  
+  } 
+  
+  .project-detail-tabs button {
+  border: 3px solid transparent;
+  }
+  
+  .project-detail-tabs button>svg {
+  border-radius: 4px 4px 0px 0px;
+  background: #ebe1f8;
+  color: #a100ff;
+  }
+  
+  .project-detail-tabs button[aria-selected="true"] {
+  border-bottom-color: #a100ff;
+  
+  }
+  
+  .MuiSvgIcon-fontSizeSmall {
+  font-size: 24px !important;
+  background: rgb(102, 187, 255,0.35);
+  border-radius: 100%;
+  color: #008eff;
+  }
+  
+  .tab-content{
+  padding: 0.5rem;
+  }
+  
+  .tab-content h3{
+  color: rgb(45, 58, 75);
+  font-size: 16px;
+  font-family: Graphik-Medium;
+  font-weight: 500;
+  }
+  
+  .tab-content p{
+  color: rgb(99, 115, 129);
+  font-size: 14px;
+  font-family: Graphik-Regular;
+  font-weight: normal;
+  margin-bottom: 0;
+  }
+  
+  .project-details-button{
+  padding: 0 0.8rem;
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(161, 0, 255);
+  border-radius: 16px;
+  margin-left: 1rem;
+  color: rgb(161, 0, 255);
+  font-size: 10px;
+  font-family: Graphik-Medium;
+  font-weight: 500;
+  line-height: 20px;
+  }
+  
+  .project-details{
+  width: 100%;
+  height: 100%;
+  background: rgb(249, 250, 251);
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  padding: 2rem 1.5rem 0 1.5rem;
+  }
+  
+  .project-details h5{
+  color: rgb(45, 58, 75);
+  font-size: 14px;
+  font-family: Graphik-Semibold;
+  font-weight: 600;
+  }
+  
+  .project-details p{
+  color: rgb(45, 58, 75);
+  font-size: 12px;
+  font-family: Graphik-Regular;
+  font-weight: normal;
+  line-height: 17px;
+  }
+  
+  
+  
+  /* SVM CSS Ends */

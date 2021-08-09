@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="8px" viewBox="0 0 14 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>&lt; Core UI &gt;/16px/chevron-downup-arrow</title>
+    <g id="03-Overview" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="&lt;-Core-UI-&gt;/16px/chevron-down" transform="translate(-3.000000, -6.000000)" fill="#212B36">
+            <path d="M10.3320313,6.41406249 L16.1132813,12.1484375 C16.296875,12.3320313 16.296875,12.6289063 16.1132813,12.8125 L15.3398438,13.5859375 C15.15625,13.7695313 14.859375,13.7695313 14.6757813,13.5859375 L10,8.95703125 L5.32421874,13.5859375 C5.14062499,13.7695313 4.84374999,13.7695313 4.66015624,13.5859375 L3.88671873,12.8125 C3.70312498,12.6289063 3.70312498,12.3320313 3.88671873,12.1484375 L9.66796875,6.41406249 C9.8515625,6.23046874 10.1484375,6.23046874 10.3320313,6.41406249 Z" id="Arrows,-Chevrons-&amp;-Carets/02-Regular/angle-up"></path>
+        </g>
+    </g>
+</svg>
