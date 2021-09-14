@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import InfoIcon from "./images/infoCirclePurple-icon.svg";
+import InfoDarkIcon from "./images/infoCirclePurpleDark-icon.svg";
 import SVMHorizontalBarChart from "./SVMHorizontalBarChart";
 
 class DimensionProjectOverviewCard extends Component {
@@ -8,6 +9,8 @@ class DimensionProjectOverviewCard extends Component {
     super(props);
     this.state = {
       popover: false,
+      theme: sessionStorage.getItem("theme"),
+
     };
   }
 
@@ -24,7 +27,8 @@ class DimensionProjectOverviewCard extends Component {
       boiDescription,
       index,
       programDeliveredValue,
-      programTargetValue,
+      programTargetValue,    
+      unit,
     } = this.props;
 
     return (
@@ -37,14 +41,21 @@ class DimensionProjectOverviewCard extends Component {
               className="project-details-button"
               onClick={this.toggleProjectView}
             >
-              <img className="pr-2" src={InfoIcon} />
+              {" "}
+              {this.state.theme === "1" ? (
+                <img className="pr-2" src={InfoDarkIcon} />
+              ) : (
+                <img className="pr-2" src={InfoIcon} />
+              )}
               Project Details
-            </button><button className="custom-btn">Custom</button>
+            </button>
+            {/* <button className="custom-btn">Custom View</button> */}
           </h3>
           <p>{boiDescription}</p>
-          <SVMHorizontalBarChart
+          <SVMHorizontalBarChart          
             dataset={[programTargetValue, programDeliveredValue]}
             labels={[`$ ${programTargetValue}`, `$ ${programDeliveredValue}`]}
+            unit={unit}
           />
         </div>
         <hr className="my-2" />
@@ -62,6 +73,7 @@ DimensionProjectOverviewCard.defaultProps = {
   labels: [],
   index: 1,
   openProjectView: () => {},
+  unit: "$",
 };
 DimensionProjectOverviewCard.propTypes = {
   boi: PropTypes.string,
@@ -72,6 +84,7 @@ DimensionProjectOverviewCard.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.string),
   index: PropTypes.number,
   openProjectView: PropTypes.func,
+  unit: PropTypes.string,
 };
 
 export { DimensionProjectOverviewCard };

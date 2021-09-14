@@ -28,6 +28,13 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class SVMHorizontalBarChart extends _react.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      theme: sessionStorage.getItem("theme")
+    };
+  }
+
   render() {
     _reactChartjs.Chart.helpers.extend(_reactChartjs.Chart.elements.Rectangle.prototype, {
       draw() {
@@ -43,7 +50,7 @@ class SVMHorizontalBarChart extends _react.Component {
           cornerRadius = 0;
         }
 
-        if (typeof cornerRadius == 'undefined') {
+        if (typeof cornerRadius == "undefined") {
           cornerRadius = 0;
         }
 
@@ -55,7 +62,7 @@ class SVMHorizontalBarChart extends _react.Component {
           bottom = vm.base;
           signX = 1;
           signY = bottom > top ? 1 : -1;
-          borderSkipped = vm.borderSkipped || 'bottom';
+          borderSkipped = vm.borderSkipped || "bottom";
         } else {
           // horizontal bar
           left = vm.base;
@@ -64,7 +71,7 @@ class SVMHorizontalBarChart extends _react.Component {
           bottom = vm.y + vm.height / 2;
           signX = right > left ? 1 : -1;
           signY = 1;
-          borderSkipped = vm.borderSkipped || 'left';
+          borderSkipped = vm.borderSkipped || "left";
         } // Canvas doesn't allow us to stroke inside the width so we can
         // adjust the sizes to fit if we're setting a stroke on the line
 
@@ -75,10 +82,10 @@ class SVMHorizontalBarChart extends _react.Component {
           borderWidth = borderWidth > barSize ? barSize : borderWidth;
           const halfStroke = borderWidth / 2; // Adjust borderWidth when bar top position is near vm.base(zero).
 
-          const borderLeft = left + (borderSkipped !== 'left' ? halfStroke * signX : 0);
-          const borderRight = right + (borderSkipped !== 'right' ? -halfStroke * signX : 0);
-          const borderTop = top + (borderSkipped !== 'top' ? halfStroke * signY : 0);
-          const borderBottom = bottom + (borderSkipped !== 'bottom' ? -halfStroke * signY : 0); // not become a vertical line?
+          const borderLeft = left + (borderSkipped !== "left" ? halfStroke * signX : 0);
+          const borderRight = right + (borderSkipped !== "right" ? -halfStroke * signX : 0);
+          const borderTop = top + (borderSkipped !== "top" ? halfStroke * signY : 0);
+          const borderBottom = bottom + (borderSkipped !== "bottom" ? -halfStroke * signY : 0); // not become a vertical line?
 
           if (borderLeft !== borderRight) {
             top = borderTop;
@@ -101,7 +108,7 @@ class SVMHorizontalBarChart extends _react.Component {
 
         const corners = [[left, bottom], [left, top], [right, top], [right, bottom]]; // Find first (starting) corner with fallback to 'bottom'
 
-        const borders = ['bottom', 'left', 'top', 'right'];
+        const borders = ["bottom", "left", "top", "right"];
         let startCorner = borders.indexOf(borderSkipped, 0);
 
         if (startCorner === -1) {
@@ -160,13 +167,14 @@ class SVMHorizontalBarChart extends _react.Component {
 
     const {
       dataset,
-      labels
+      labels,
+      unit
     } = this.props;
     const state = {
       labels: labels,
       datasets: [{
-        backgroundColor: ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
-        borderColor: ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
+        backgroundColor: this.state.theme === "1" ? ["rgb(161, 0, 255)", "rgb(133, 215, 255)"] : ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
+        borderColor: this.state.theme === "1" ? ["rgb(161, 0, 255)", "rgb(133, 215, 255)"] : ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
         borderWidth: 0.1,
         data: dataset,
         datalabels: {
@@ -203,8 +211,8 @@ class SVMHorizontalBarChart extends _react.Component {
               return n;
             }
 
-            let res = formatNumber(value) === null ? "" : formatNumber(value);
-            return res + " $";
+            let res = formatNumber(value) === null ? "" : formatNumber(value) + " ".concat(unit);
+            return res;
           },
           color: "rgb(156, 106, 222)",
           font: {
@@ -228,7 +236,7 @@ class SVMHorizontalBarChart extends _react.Component {
           padding: {
             top: 10,
             left: -10,
-            right: 10,
+            right: 40,
             bottom: 5
           }
         },
@@ -276,7 +284,7 @@ class SVMHorizontalBarChart extends _react.Component {
 
                 return formatNumber(value);
               },
-              fontColor: "rgb(0, 0, 0)",
+              fontColor: this.state.theme === "1" ? "rgb(181, 192, 202)" : "rgb(0, 0, 0)",
               fontFamily: "Graphik-Regular",
               fontSize: 11,
               fontWeight: 400,
@@ -307,11 +315,13 @@ class SVMHorizontalBarChart extends _react.Component {
 exports.SVMHorizontalBarChart = SVMHorizontalBarChart;
 SVMHorizontalBarChart.defaultProps = {
   dataset: [],
-  labels: []
+  labels: [],
+  unit: "$"
 };
 SVMHorizontalBarChart.propTypes = {
   dataset: _propTypes.default.arrayOf(_propTypes.default.number),
-  labels: _propTypes.default.arrayOf(_propTypes.default.string)
+  labels: _propTypes.default.arrayOf(_propTypes.default.string),
+  unit: _propTypes.default.string
 };
 var _default = SVMHorizontalBarChart;
 exports.default = _default;

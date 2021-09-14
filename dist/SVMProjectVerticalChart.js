@@ -33,10 +33,16 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 class SVMProjectVerticalChart extends _react.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      theme: sessionStorage.getItem("theme")
+    };
   }
 
   render() {
+    const {
+      unit
+    } = this.props;
+
     _reactChartjs.Chart.helpers.extend(_reactChartjs.Chart.elements.Rectangle.prototype, {
       draw() {
         const ctx = this._chart.ctx;
@@ -181,8 +187,8 @@ class SVMProjectVerticalChart extends _react.Component {
     const state = {
       labels: ["Identified", "Delivered"],
       datasets: [{
-        backgroundColor: ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
-        borderColor: ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
+        backgroundColor: this.state.theme === "1" ? ["rgb(161, 0, 255)", "rgb(133, 215, 255)"] : ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
+        borderColor: this.state.theme === "1" ? ["rgb(161, 0, 255)", "rgb(133, 215, 255)"] : ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
         borderWidth: 0.1,
         barPercentage: 0.1,
         data: [...this.props.dataset],
@@ -226,7 +232,7 @@ class SVMProjectVerticalChart extends _react.Component {
             }
 
             let res = formatNumber(value) === null ? "" : formatNumber(value);
-            return res;
+            return res + " ".concat(unit);
           },
           color: "rgb(156, 106, 222)",
           font: {
@@ -242,7 +248,7 @@ class SVMProjectVerticalChart extends _react.Component {
     return /*#__PURE__*/_react.default.createElement("div", {
       className: "svm-project-details-chart"
     }, /*#__PURE__*/_react.default.createElement(_reactChartjs.Bar, {
-      height: "80px",
+      height: "130px",
       data: state,
       options: {
         cornerRadius: 15,
@@ -250,28 +256,28 @@ class SVMProjectVerticalChart extends _react.Component {
         layout: {
           padding: {
             top: 20,
-            left: 0,
+            left: -20,
             right: 0,
             bottom: 5
           }
         },
-        annotation: {
-          annotations: [{
-            type: 'line',
-            mode: 'horizontal',
-            scaleID: 'y-axis-0',
-            value: this.props.dataset[0],
-            borderColor: 'rgb(181, 192, 202)',
-            borderWidth: 0.5
-          }, {
-            type: 'line',
-            mode: 'horizontal',
-            scaleID: 'y-axis-0',
-            value: this.props.dataset[1],
-            borderColor: 'rgb(181, 192, 202)',
-            borderWidth: 0.5
-          }]
-        },
+        // annotation: {
+        //   annotations: [{
+        //     type: 'line',
+        //     mode: 'horizontal',
+        //     scaleID: 'y-axis-0',
+        //     value: this.props.dataset[0],
+        //     borderColor: 'rgb(181, 192, 202)',
+        //     borderWidth: 0.5,
+        //   },{
+        //     type: 'line',
+        //     mode: 'horizontal',
+        //     scaleID: 'y-axis-0',
+        //     value:this.props.dataset[1],
+        //     borderColor: 'rgb(181, 192, 202)',
+        //     borderWidth: 0.5,
+        //   }],
+        // },
         legend: {
           display: false
         },
@@ -289,14 +295,15 @@ class SVMProjectVerticalChart extends _react.Component {
               display: true
             },
             gridLines: {
-              display: true,
+              display: this.state.theme === "1" ? true : false,
               drawBorder: true,
               drawOnChartArea: false,
-              drawTicks: false
+              drawTicks: false,
+              color: this.state.theme === "1" ? "rgb(181, 192, 202)" : "rgb(181, 192, 202,0.5)"
             },
             ticks: {
               padding: 15,
-              fontColor: "rgb(45, 58, 75)",
+              fontColor: this.state.theme === "1" ? "rgb(181, 192, 202)" : "rgb(45, 58, 75)",
               fontSize: 12,
               fontFamily: "Graphik-Medium",
               fontWeight: "500"
@@ -308,9 +315,10 @@ class SVMProjectVerticalChart extends _react.Component {
               display: true
             },
             gridLines: {
-              display: false,
-              drawBorder: true,
-              drawOnChartArea: false,
+              display: true,
+              color: this.state.theme === "1" ? "rgb(181, 192, 202)" : "rgb(181, 192, 202,0.5)",
+              drawBorder: false,
+              drawOnChartArea: true,
               drawTicks: false
             },
             ticks: {
@@ -359,8 +367,13 @@ class SVMProjectVerticalChart extends _react.Component {
 }
 
 exports.SVMProjectVerticalChart = SVMProjectVerticalChart;
+SVMProjectVerticalChart.defaultProps = {
+  dataset: [],
+  unit: "$"
+};
 SVMProjectVerticalChart.propTypes = {
-  dataset: _propTypes.default.arrayOf(_propTypes.default.string)
+  dataset: _propTypes.default.arrayOf(_propTypes.default.string),
+  unit: _propTypes.default.string
 };
 var _default = SVMProjectVerticalChart;
 exports.default = _default;

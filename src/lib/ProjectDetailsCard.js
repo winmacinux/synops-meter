@@ -5,15 +5,15 @@ import SVMProjectVerticalChart from "./SVMProjectVerticalChart";
 import { Tabs, Tab } from "@material-ui/core";
 import CloseIcon from "./images/closeGrey-icon.svg";
 import axiosInstance from "./axiosInstance";
+import ProjectDetailsSkeleton from "./skeletons/ProjectDetailsSkeleton";
 
 class ProjectDetailsCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      clientId: sessionStorage.getItem("clientId"),
-      languageCode: sessionStorage.getItem("languageCode"),
       projects: [],
       tabValue: 0,
+      loading: false,
     };
   }
 
@@ -28,14 +28,24 @@ class ProjectDetailsCard extends Component {
   // }
 
   loadProjectDetails = () => {
+    this.setState({
+      loading: true,
+    });
     axiosInstance
-      .get(
-        `${this.props.server}/api/Svm/project-details?clientId=${this.state.clientId}&languageCode=${this.state.languageCode}&fiscalYear=${this.props.fiscalYear}&programId=${this.props.programId}&dimension=${this.props.dimension}&subDimension=${this.props.subDimension}&boi=${this.props.boi}`
-      )
+      .post(`${this.props.server}Svm/project-details`, {
+        clientId: this.props.clientId,
+        languageCode: this.props.languageCode,
+        fiscalYear: this.props.fiscalYear,
+        programId: this.props.programId,
+        dimension: this.props.dimension,
+        subDimension: this.props.subDimension,
+        boi: this.props.boi,
+      })
       .then((res) => {
         if (Array.isArray(res.data) && res.data.length) {
           this.setState({
             projects: [...res.data],
+            loading: false,
             // projects: [
             //   ...res.data.map((o) => ({
             //     ...o,
@@ -49,6 +59,9 @@ class ProjectDetailsCard extends Component {
       })
       .catch((err) => {
         console.log(err);
+        this.setState({
+          loading: false,
+        });
       });
   };
 
@@ -59,7 +72,7 @@ class ProjectDetailsCard extends Component {
   };
 
   render() {
-    const { projects, tabValue } = this.state;
+    const { projects, tabValue, loading } = this.state;
     const { boi } = this.props;
 
     return (
@@ -93,27 +106,32 @@ class ProjectDetailsCard extends Component {
             ))}
           </Tabs>
         </div>
-        {projects.map((o, i) => (
-          <div
-            role="tabpanel"
-            hidden={tabValue !== i}
-            id={`scrollable-auto-tabpanel-${i}`}
-            value={tabValue}
-            aria-labelledby={`scrollable-auto-tab-${i}`}
-            key={`project-dimension-tabpanel-${o.project}-${i}`}
-            index={i}
-          >
-            {tabValue === i && (
-              <div>
-                <p>{o.projectDescription}</p>
-                <SVMProjectVerticalChart
-                  dataset={[o.projectTargetValue, o.projectDeliveredValue]}
-                  // colors={[o.fill1, o.fill2]}
-                />
+        {!loading
+          ? projects.map((o, i) => (
+              <div
+                role="tabpanel"
+                hidden={tabValue !== i}
+                id={`scrollable-auto-tabpanel-${i}`}
+                value={tabValue}
+                aria-labelledby={`scrollable-auto-tab-${i}`}
+                key={`project-dimension-tabpanel-${o.project}-${i}`}
+                index={i}
+              >
+                {tabValue === i && (
+                  <div>
+                    <p>{o.projectDescription}</p>
+                    <SVMProjectVerticalChart                  
+                      dataset={[o.projectTargetValue, o.projectDeliveredValue]}
+                      unit={o.unit === "USD" ? "$" : o.unit}
+                      // colors={[o.fill1, o.fill2]}
+                    />
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        ))}
+            ))
+          : [...new Array(2)].map((o, i) => (
+              <ProjectDetailsSkeleton key={`project-dimension-skeleton-${i}`} />
+            ))}
       </div>
     );
   }
@@ -127,6 +145,8 @@ ProjectDetailsCard.defualtProps = {
   fiscalYear: null,
   boi: null,
   onClose: () => {},
+  clientId: null,
+  languageCode: null,
 };
 ProjectDetailsCard.propTypes = {
   server: PropTypes.string,
@@ -136,6 +156,8 @@ ProjectDetailsCard.propTypes = {
   fiscalYear: PropTypes.string,
   boi: PropTypes.string,
   onClose: PropTypes.func,
+  clientId: PropTypes.string,
+  languageCode: PropTypes.string,
 };
 
 export { ProjectDetailsCard };

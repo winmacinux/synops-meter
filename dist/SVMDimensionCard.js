@@ -13,6 +13,8 @@ var _downArrowIcon = _interopRequireDefault(require("./images/downArrow-icon.svg
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
+var _headerAngleDownIcon = _interopRequireDefault(require("./images/headerAngleDown-icon.svg"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -29,17 +31,21 @@ class SVMDimensionCard extends _react.Component {
     const {
       dimensionName,
       text,
-      isActive
+      isActive,
+      theme
     } = this.props;
     return /*#__PURE__*/_react.default.createElement("div", {
-      className: "dimension-card"
+      className: isActive ? "dimension-card cursor" : "dimension-card",
+      onClick: () => isActive ? this.props.toggleView(true) : false
     }, /*#__PURE__*/_react.default.createElement("h6", {
       className: "bodytext14-medium-midnight"
-    }, dimensionName, " ", isActive && /*#__PURE__*/_react.default.createElement("img", {
-      className: "float-right",
-      src: _downArrowIcon.default,
-      onClick: () => this.props.toggleView(true)
-    })), /*#__PURE__*/_react.default.createElement("p", null, text));
+    }, dimensionName, " ", isActive && (theme === "1" ? /*#__PURE__*/_react.default.createElement("img", {
+      className: "float-right cursor",
+      src: _headerAngleDownIcon.default
+    }) : /*#__PURE__*/_react.default.createElement("img", {
+      className: "float-right cursor",
+      src: _downArrowIcon.default
+    }))), /*#__PURE__*/_react.default.createElement("p", null, text));
   }
 
 }
@@ -49,11 +55,13 @@ SVMDimensionCard.defaultProps = {
   isActive: false,
   toggleView: () => {},
   dimensionName: "",
-  text: ""
+  text: "",
+  theme: null
 };
 SVMDimensionCard.propTypes = {
   isActive: _propTypes.default.bool,
   toggleView: _propTypes.default.func,
   dimensionName: _propTypes.default.string,
-  text: _propTypes.default.string
+  text: _propTypes.default.string,
+  theme: _propTypes.default.string
 };

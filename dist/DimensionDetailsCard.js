@@ -21,7 +21,11 @@ var _DimensionProjectOverviewCard = _interopRequireDefault(require("./DimensionP
 
 var _ProjectDetailsCard = _interopRequireDefault(require("./ProjectDetailsCard"));
 
+var _headerAngleDownIcon = _interopRequireDefault(require("./images/headerAngleDown-icon.svg"));
+
 var _axiosInstance = _interopRequireDefault(require("./axiosInstance"));
+
+var _DimensionProjectOverviewSkeleton = _interopRequireDefault(require("./skeletons/DimensionProjectOverviewSkeleton"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38,11 +42,12 @@ class DimensionDetailsCard extends _react.Component {
     super(props);
 
     _defineProperty(this, "handleTabChange", key => {
-      console.log(key);
-      this.setState({
+      if (this.state.activeSubDimension !== key) this.setState({
         activeSubDimension: key,
         activeTab: key,
-        boiDetails: []
+        boiDetails: [],
+        selectedBoi: null,
+        popover: false
       });
     });
 
@@ -57,10 +62,10 @@ class DimensionDetailsCard extends _react.Component {
       popover: false,
       activeTab: null,
       activeSubDimension: null,
-      clientId: sessionStorage.getItem("clientId"),
-      languageCode: sessionStorage.getItem("languageCode"),
       boiDetails: [],
-      selectedBoi: null
+      loading: false,
+      selectedBoi: null,
+      theme: sessionStorage.getItem("theme")
     };
   }
 
@@ -74,20 +79,42 @@ class DimensionDetailsCard extends _react.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log(this.props);
+
     if (this.state.activeSubDimension !== prevState.activeSubDimension) {
       this.loadDimensionDetails();
+    }
+
+    if (this.props.selectedSubDimension !== prevProps.selectedSubDimension) {
+      const subDimension = this.props.subDimension[this.props.selectedSubDimension] ? this.props.subDimension[this.props.selectedSubDimension] : null;
+      if (subDimension !== this.state.activeSubDimension) this.handleTabChange(subDimension);
     }
   }
 
   loadDimensionDetails() {
-    _axiosInstance.default.get("".concat(this.props.server, "/api/Svm/boi-details?clientId=").concat(this.state.clientId, "&languageCode=").concat(this.state.languageCode, "&fiscalYear=").concat(this.props.fiscalYear, "&programId=").concat(this.props.programId, "&dimension=").concat(this.props.dimensionName, "&subDimension=").concat(this.state.activeSubDimension)).then(res => {
+    this.setState({
+      loading: true
+    });
+
+    _axiosInstance.default.post("".concat(this.props.server, "Svm/boi-details"), {
+      clientId: this.props.clientId,
+      languageCode: this.props.languageCode,
+      fiscalYear: this.props.fiscalYear,
+      programId: this.props.programId,
+      dimension: this.props.dimensionName,
+      subDimension: this.state.activeSubDimension
+    }).then(res => {
       if (Array.isArray(res.data)) {
         this.setState({
-          boiDetails: [...res.data]
+          boiDetails: [...res.data],
+          loading: false
         });
       }
     }).catch(err => {
       console.log(err);
+      this.setState({
+        loading: false
+      });
     });
   }
 
@@ -97,20 +124,27 @@ class DimensionDetailsCard extends _react.Component {
       subDimension,
       server,
       programId,
-      fiscalYear
+      fiscalYear,
+      clientId,
+      languageCode
     } = this.props;
     const {
       popover,
       activeTab,
       boiDetails,
       selectedBoi,
-      activeSubDimension
+      activeSubDimension,
+      loading
     } = this.state;
     return /*#__PURE__*/_react.default.createElement("div", {
-      className: popover ? "dimension-collapse-card" : "dimension-collapse-card p-4"
+      className: popover ? "dimension-collapse-card" : this.props.isGridView ? "dimension-collapse-card p-4 dimension-collapse-card-scroll" : "dimension-collapse-card p-4"
     }, /*#__PURE__*/_react.default.createElement("h6", {
       className: popover ? "p-3 bodytext14-medium-midnight" : "bodytext14-medium-midnight"
-    }, dimensionName, /*#__PURE__*/_react.default.createElement("img", {
+    }, dimensionName, this.state.theme === "1" ? /*#__PURE__*/_react.default.createElement("img", {
+      className: "white_icon float-right mt-1 cursor",
+      src: _headerAngleDownIcon.default,
+      onClick: this.props.onClose
+    }) : /*#__PURE__*/_react.default.createElement("img", {
       src: _upArrowIcon.default,
       className: "float-right mt-1 cursor",
       onClick: this.props.onClose
@@ -123,18 +157,23 @@ class DimensionDetailsCard extends _react.Component {
       eventKey: o,
       title: o,
       key: "dimension-project-overviewcard-".concat(dimensionName, "-").concat(i)
-    }, boiDetails.map((_o, _i) => /*#__PURE__*/_react.default.createElement(_DimensionProjectOverviewCard.default, _extends({}, _o, {
+    }, !loading ? boiDetails.map((_o, _i) => /*#__PURE__*/_react.default.createElement(_DimensionProjectOverviewCard.default, _extends({}, _o, {
       index: _i + 1,
       key: "dimension-project-overviewcard-".concat(o.name, "-").concat(_i),
-      openProjectView: () => this.togglePopover(_o.boi)
-    })))))) : /*#__PURE__*/_react.default.createElement(_ProjectDetailsCard.default, {
+      openProjectView: () => this.togglePopover(_o.boi),
+      unit: _o.unit === "USD" ? "$" : _o.unit
+    }))) : [...new Array(2)].map((o, i) => /*#__PURE__*/_react.default.createElement(_DimensionProjectOverviewSkeleton.default, {
+      key: "dimension-project-overviewcard-".concat(i)
+    }))))) : /*#__PURE__*/_react.default.createElement(_ProjectDetailsCard.default, {
       onClose: this.togglePopover,
       programId: programId,
       server: server,
       dimension: dimensionName,
       subDimension: activeSubDimension,
       fiscalYear: fiscalYear,
-      boi: selectedBoi
+      boi: selectedBoi,
+      clientId: clientId,
+      languageCode: languageCode
     }));
   }
 
@@ -147,7 +186,11 @@ DimensionDetailsCard.defaultProps = {
   programId: null,
   fiscalYear: null,
   subDimension: [],
-  onClose: () => {}
+  onClose: () => {},
+  clientId: null,
+  languageCode: null,
+  selectedSubDimension: null,
+  isGridView: false
 };
 DimensionDetailsCard.propTypes = {
   server: _propTypes.default.string,
@@ -155,7 +198,11 @@ DimensionDetailsCard.propTypes = {
   programId: _propTypes.default.string,
   fiscalYear: _propTypes.default.string,
   subDimension: _propTypes.default.arrayOf(_propTypes.default.string),
-  onClose: _propTypes.default.func
+  onClose: _propTypes.default.func,
+  clientId: _propTypes.default.string,
+  languageCode: _propTypes.default.string,
+  selectedSubDimension: _propTypes.default.number,
+  isGridView: _propTypes.default.bool
 };
 var _default = DimensionDetailsCard;
 exports.default = _default;

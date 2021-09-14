@@ -1,42 +1,59 @@
 /* eslint-disable */
 import React from "react";
-import { PieChart, ResponsiveContainer, Pie, Sector } from "recharts";
+import { PieChart, ResponsiveContainer, Pie, Sector, Text } from "recharts";
 import PropTypes from "prop-types";
 
 const centre = [{ name: "Centre", value: 1 }];
-let newsubdimension = [{ name: "", value: 0, color: "", dimensionId: "" }];
 const RADIAN = Math.PI / 180;
-
-let outerRing = [];
-let midRing = [];
-
-const START_ANGLE = 90;
-const END_ANGLE = 34;
+const data01 = [
+  { name: "Financial", value: 300, fill: "#B455AA" },
+  { name: "Experience", value: 300, fill: "#A055F5" },
+  { name: "Sustainability", value: 300, fill: "#595959" },
+  { name: "Talent", value: 300, fill: "#460073" },
+  { name: "Inclusion & Diversity", value: 300, fill: "#7500C1" },
+  { name: "Custom", value: 300, fill: "#A100FF" },
+];
 
 export default class SVMDoughNutChartV2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       activeIndex: null,
+      startAngle: 60,
       dimensionsChart: [],
       subDimensionsChart: [],
-      subDimensionStartAngle: 90,
-      subDimensionEndAngle: 34,
+      subDimensionStartAngle: 60,
+      subDimensionEndAngle: 120,
+      subDimensionEndAngle: 115,
+      circle: [{ value: 100 }],
     };
   }
 
   componentDidMount() {
+    // this.setState((state) => ({
+    //   circle: [
+    //     {
+    //       ...state.circle[0],
+    //       fill: this.props.theme == "1" ? "#000000" : "#FFFFFF",
+    //     },
+    //   ],
+    // }));
     const dimensionsChart =
       this.props.dimensions &&
       this.props.dimensions.map((o, i) => ({
         ...o,
-        fill: o.id % 2 === 0 ? "#eff2f5" : "#e2e2e2",
+        fill:
+          this.props.theme === "1"
+            ? "#b5c0ca"
+            : o.id % 2 === 0
+            ? "#eff2f5"
+            : "#e2e2e2",
       }));
     const subDimensionsChart =
       this.props.subDimensions &&
       this.props.subDimensions.map((o, i) => ({
         ...o,
-        fill: o.dimensionId % 2 === 0 ? "#eff2f5" : "#e2e2e2",
+        fill: this.props.theme === "1" ? "#b5c0ca" : "#eff2f5",
       }));
 
     this.setState({
@@ -51,79 +68,109 @@ export default class SVMDoughNutChartV2 extends React.Component {
         this.props.dimensions &&
         this.props.dimensions.map((o, i) => ({
           ...o,
-          fill: i % 2 === 0 ? "#eff2f5" : "#e2e2e2",
+          fill:
+            this.props.theme === "1"
+              ? "#b5c0ca"
+              : i % 2 === 0
+              ? "#eff2f5"
+              : "#e2e2e2",
         }));
       this.setState({
         dimensionsChart,
       });
     }
 
-    if (prevProps.expand !== this.props.expand) {
+    if (
+      this.props.selectedDimension !== prevProps.selectedDimension &&
+      (prevProps.expand !== this.props.expand ||
+        prevProps.subDimensions !== this.props.subDimensions)
+    ) {
       const subDimensionsChart = this.props.subDimensions.map((o, i) => ({
         ...o,
-        fill: i % 2 === 0 ? "#eff2f5" : "#e2e2e2",
+        fill: this.props.theme === "1" ? "#b5c0ca" : "#eff2f5",
       }));
       this.setState({
         subDimensionsChart,
       });
+
+      if (this.props.expand && this.props.selectedDimension) {
+        this.setState((state) => ({
+          startAngle: state.startAngle - this.props.selectedDimension * 60,
+        }));
+      } else {
+        this.setState({
+          startAngle: 60,
+        });
+      }
     }
   }
 
-  onPieEnter = (_, index) => {
-    this.props.expandSubMenu(index);
-    // this.setState({
-    //   activeIndex: index,
-    // });
-  };
+  dimensionLabel = (props) => {
+    const RADIAN = Math.PI / 180;
+    const {
+      cx,
+      cy,
+      midAngle,
+      index,
+      outerRadius,
+      startAngle,
+      endAngle,
+      payload,
+    } = props;
 
-  renderCustomizedLabel = ({
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
-    index,
-  }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-    let a = 0;
-    let b = 0;
-    if (index === 0 || index === 3) {
-      a = 30;
-    } else if (index === 1) {
-      a = 90;
-    } else if (index === 4) {
-      a = -90;
-    } else {
-      a = -35;
-    }
-    if (index == 2 || index == 3) {
-      b = 15;
-    } else {
-      b = -15;
-    }
+    const sin = Math.sin(-RADIAN * midAngle);
+    const cos = Math.cos(-RADIAN * midAngle);
+    const sx = cx + (outerRadius - 34) * cos;
+    const sy = cy + (outerRadius - 34) * sin;
+    // const angle = [176, 536, -184, -544, 896].includes(
+    //   parseInt(startAngle + endAngle)
+    // )
+    //   ? 0
+    //   : startAngle + endAngle + 8;
+
+    const angle =
+      (midAngle > 420 && midAngle < 480) ||
+      (midAngle > 240 && midAngle < 300) ||
+      (midAngle > 600 && midAngle < 660)
+        ? 0
+        : startAngle + endAngle + 8;
 
     return (
-      <text
-        x={x}
-        y={y + b}
-        scaleToFit={false}
-        textAnchor="middle"
-        dominantBaseline="central"
-        style={{}}
-        fontSize={12}
-        fontWeight={400}
-        fill="#000000"
-        fontFamily={"Graphik-Regular"}
-        width={12}
-        transform={"rotate(" + a + " " + x + " " + y + ")"}
+      <g
+        cursor={
+          this.props.dimensions[index] && this.props.dimensions[index].isActive
+            ? "pointer"
+            : "inherit"
+        }
       >
-        {Array.isArray(this.props.dimensions) &&
-          this.props.dimensions[index] &&
-          this.props.dimensions[index].dimensionName}
-      </text>
+        <Text
+          x={sx}
+          y={sy}
+          textAnchor="middle"
+          angle={90 - midAngle}
+          fontSize={12}
+          fontWeight={500}
+          fill="#000000"
+          opacity={
+            this.props.dimensions[index] && this.props.dimensions[index].opacity
+          }
+          fontFamily={"Graphik-Medium"}
+          width={12}
+          onClick={(e) => this.onPieEnter(e, index)}
+        >
+          {payload.dimensionName}
+        </Text>
+      </g>
     );
+  };
+
+  onPieEnter = (_, index) => {
+    this.props.expandSubMenu(index);
+  };
+
+  onSubDimensionClick = (o, index) => {
+    // this.props.switchSubDimension(index);
+    this.props.switchSubDimension(o.index);
   };
 
   renderCustomizedLabel1 = ({
@@ -135,6 +182,7 @@ export default class SVMDoughNutChartV2 extends React.Component {
     innerRadius,
     outerRadius,
     index,
+    ...props
   }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -142,66 +190,79 @@ export default class SVMDoughNutChartV2 extends React.Component {
     const ar = innerRadius + (outerRadius - innerRadius) * 0.2;
     const ax = cx + ar * Math.cos(-midAngle * RADIAN);
     const ay = cy + ar * Math.sin(-midAngle * RADIAN);
-    let a = 0;
 
-    if (
-      // startAngle < -209 ||
-      startAngle > 3 &&
-      startAngle < 91
-    ) {
-      a = 10 + (index - 0.2) * 23;
-    } else if (startAngle < -209) {
-      a = 10 + (index - 0.2) * 22;
-    } else if (startAngle < 4 && endAngle > -31) {
-      a = 5 + (index - 0.2) * 23;
-    } else if (startAngle < -149 && endAngle > -209) {
-      a = 3 + (index - 0.2) * 23;
-    } else if (startAngle < -30 && endAngle > -150) {
-      a = 170 + (index - 0.2) * 25;
-    } else {
-      a = 5 + (index - 0.2) * 23;
-    }
+    const sin = Math.sin(-RADIAN * midAngle);
+    const cos = Math.cos(-RADIAN * midAngle);
+    const sx = cx + (outerRadius - 34) * cos;
+    const sy = cy + (outerRadius - 34) * sin;
 
-    let datalabel = this.props.subDimensions[index].name;
-    let label = [];
-    let searchKey = datalabel.search("&");
-    if (searchKey > -1) {
-      label.push(datalabel.slice(0, searchKey + 1));
-      label.push(datalabel.slice(searchKey + 1));
-    } else {
-      label = datalabel.split(" ");
-    }
+    let datalabel =
+      this.props.subDimensions.length - 1 >= index
+        ? this.props.subDimensions[index].name
+        : "";
 
     return (
       /*SubDimnension*/
       <React.Fragment>
-        <text
-          x={x}
-          y={y}
-          fill="black"
+        <Text
+          x={sx}
+          y={sy}
+          angle={90 - midAngle}
           textAnchor="middle"
-          dominantBaseline="top"
-          scaleToFit={true}
-          fontSize={9}
-          fontWeight={500}
+          verticalAnchor="end"
+          fontSize={10}
+          fontWeight={400}
+          fill="#020000"
+          opacity="0.8"
+          fontFamily={"Graphik-Medium"}
           width={12}
-          transform={"rotate(" + a + " " + x + " " + y + ")"}
+          onClick={() => this.onSubDimensionClick(null, index)}
         >
-          <tspan x={x} y={y - 5} alignmentBaseline="middle" fontSize="8">
-            {label[0]}
-          </tspan>
-          <tspan fontSize="8" x={x} y={y + 5}>
-            {label[1]}
-          </tspan>
-        </text>
+          {datalabel}
+        </Text>
         <circle
           cx={ax}
-          cy={ay}
-          r={3}
-          fill={this.props.subDimensions[index].fill}
+          cy={ay + 5}
+          r={4}
+          fill="#b455aa"
           stroke="none"
+          cursor="pointer"
+          onClick={() => this.onSubDimensionClick(null, index)}
         />
       </React.Fragment>
+      // <>
+      //   <text
+      //     x={x}
+      //     y={y}
+      //     textAnchor="middle"
+      //     dominantBaseline="top"
+      //     scaleToFit={true}
+      //     fontSize={10}
+      //     fontWeight={400}
+      //     fill="#020000"
+      //     fontFamily={"Graphik-Regular"}
+      //     width={12}
+      //     cursor="pointer"
+      //     onClick={() => this.onSubDimensionClick(null, index)}
+      //     transform={"rotate(" + a + " " + x + " " + y + ")"}
+      //   >
+      //     <tspan x={x} y={y - 5} alignmentBaseline="middle" fontSize="8">
+      //       {label[0]}
+      //     </tspan>
+      //     <tspan fontSize="8" x={x} y={y + 5}>
+      //       {label[1]}
+      //     </tspan>
+      //   </text>
+      //   <circle
+      //     cx={ax}
+      //     cy={ay + 5}
+      //     r={4}
+      //     fill="#b455aa"
+      //     stroke="none"
+      //     cursor="pointer"
+      //     onClick={() => this.onSubDimensionClick(null, index)}
+      //   />
+      // </>
     );
   };
 
@@ -233,50 +294,58 @@ export default class SVMDoughNutChartV2 extends React.Component {
   };
 
   renderCustomizedLabel2 = () => {
+    const { expand } = this.props;
     return (
-      <>
+      <g cursor={expand ? "pointer" : ""}>
         <text
-          x="51%"
+          x="48%"
           y="0%"
-          dy={13}
+          dy={3}
           textAnchor={"middle"}
           fontSize={30}
           fontWeight={500}
-          fill="#440073"
+          fill={this.props.theme === "1" ? "#ffffff" : "#440073"}
           fontFamily={"Graphik-Medium"}
+          onClick={this.onPieEnter}
         >
-          360&deg;
+          360
+          <tspan fontSize={16} x="56.5%" y="-2%">
+            &deg;
+          </tspan>
         </text>
         <text
-          x="50%"
-          y="5%"
-          dy={5}
+          x="47.5%"
+          y="4%"
+          dy={3}
           textAnchor={"middle"}
           fontSize={18}
           fontWeight={500}
-          fill="#440073"
+          fill={this.props.theme === "1" ? "#ffffff" : "#440073"}
           fontFamily={"Graphik-Medium"}
+          onClick={this.onPieEnter}
         >
-          Value
+          value
         </text>
-      </>
+      </g>
     );
   };
 
   render() {
-    const { dimensions, subDimensions, expand, selectedDimension } = this.props;
+    const { dimensions, subDimensions, expand, theme } = this.props;
     const {
       activeIndex,
       dimensionsChart,
       subDimensionsChart,
       subDimensionStartAngle,
       subDimensionEndAngle,
+      startAngle,
+      circle,
     } = this.state;
 
     return (
       <ResponsiveContainer
         width="100%"
-        height={"100%"}
+        height="100%"
         id="wheel-chart-container"
         className="svm-dough-nut-chart"
       >
@@ -286,45 +355,47 @@ export default class SVMDoughNutChartV2 extends React.Component {
             activeShape={this.renderActiveShape}
             data={dimensionsChart}
             dataKey="value"
-            cx="50%"
+            cx="48%"
             cy="0%"
-            startAngle={90}
-            endAngle={-270}
-            innerRadius="27%"
-            outerRadius="62%"
+            startAngle={536 - startAngle}
+            endAngle={0 - startAngle}
+            innerRadius="30%"
+            outerRadius="78%"
             paddingAngle={4}
             onClick={this.onPieEnter}
-            label={this.renderCustomizedLabel}
+            label={this.dimensionLabel}
             labelLine={false}
             isAnimationActive={false}
             animationEasing={"ease-out"}
+            stroke=""
           />
-
           {/*Dimension Upper Colored Ring*/}
           <Pie
             activeIndex={activeIndex}
             activeShape={this.renderActiveShape}
             data={dimensions}
-            cx="50%"
+            cx="48%"
             cy="0%"
-            startAngle={90}
-            endAngle={-270}
-            innerRadius="64%"
-            outerRadius="68%"
+            // startAngle={startAngle}
+            // endAngle={360 + startAngle}
+            startAngle={536 - startAngle}
+            endAngle={0 - startAngle}
+            innerRadius="82%"
+            outerRadius="86%"
             paddingAngle={4}
             isAnimationActive={false}
+            stroke=""
           />
-
           {/*Dimension Outer Complete Ring*/}
           {!expand && (
             <Pie
               activeIndex={activeIndex}
               activeShape={this.renderActiveShape}
               data={centre}
-              cx="50%"
+              cx="48%"
               cy="0%"
-              innerRadius="70%"
-              outerRadius="70.2%"
+              innerRadius="90%"
+              outerRadius="90.5%"
               isAnimationActive={false}
               fill="#7400c0"
               paddingAngle={0}
@@ -332,9 +403,7 @@ export default class SVMDoughNutChartV2 extends React.Component {
               stroke=""
             />
           )}
-
           {/*Sub-dimension Label Ring*/}
-
           {expand && (
             <Pie
               activeIndex={activeIndex}
@@ -343,17 +412,19 @@ export default class SVMDoughNutChartV2 extends React.Component {
               endAngle={subDimensionEndAngle}
               data={subDimensionsChart}
               // data={subDimensions}
-              cx="50%"
+              cx="48%"
               cy="0%"
-              innerRadius="70.2%"
-              outerRadius="92%"
+              innerRadius="90%"
+              outerRadius="120%"
               paddingAngle={2}
               label={this.renderCustomizedLabel1}
-              //   onClick={onSubDimensionCick}
+              onClick={this.onSubDimensionClick}
               labelLine={false}
               isAnimationActive={false}
-              animationDuration={500}
+              animationDuration={1000}
               animationEasing={"ease-out"}
+              stroke=""
+              cursor="pointer"
             />
           )}
           {expand && (
@@ -362,14 +433,15 @@ export default class SVMDoughNutChartV2 extends React.Component {
               startAngle={subDimensionStartAngle}
               endAngle={subDimensionEndAngle}
               data={subDimensions}
-              cx="50%"
+              cx="48%"
               cy="0%"
-              innerRadius="93%"
-              outerRadius="96%"
+              innerRadius="124%"
+              outerRadius="127%"
               paddingAngle={2}
               isAnimationActive={false}
               animationDuration={500}
               animationEasing={"ease-out"}
+              stroke=""
             />
           )}
           {/*Sub-dimension Outer Ring*/}
@@ -377,51 +449,108 @@ export default class SVMDoughNutChartV2 extends React.Component {
             <Pie
               activeIndex={activeIndex}
               activeShape={this.renderActiveShape}
-              data={subDimensions}
+              data={centre}
               startAngle={subDimensionStartAngle}
               endAngle={subDimensionEndAngle}
-              cx="50%"
+              cx="48%"
               cy="0%"
-              innerRadius="98%"
-              outerRadius="99%"
+              innerRadius="131%"
+              outerRadius="132%"
               paddingAngle={2}
+              fill="#7400c0"
               isAnimationActive={false}
+              stroke=""
             />
           )}
-
           {/* Logo Circle Ring */}
           <Pie
             activeIndex={activeIndex}
             activeShape={this.renderActiveShape}
-            data={dimensions}
-            cx="50%"
+            data={circle}
+            cx="48%"
             cy="0%"
-            startAngle={88}
-            endAngle={-275}
-            innerRadius="25%"
-            outerRadius="27%"
+            startAngle={startAngle}
+            endAngle={360 + startAngle}
+            innerRadius="0%"
+            outerRadius="30%"
             label={this.renderCustomizedLabel2}
+            fill={"transparent"}
+            onClick={(e) => this.onPieEnter(e, null)}
+            isAnimationActive={false}
+            paddingAngle={0}
+            labelLine={false}
+            stroke=""
+            cursor={expand ? "pointer" : ""}
+          ></Pie>
+          <Pie
+            activeIndex={activeIndex}
+            activeShape={this.renderActiveShape}
+            data={data01}
+            cx="48%"
+            cy="0%"
+            startAngle={startAngle}
+            endAngle={360 + startAngle}
+            innerRadius="30%"
+            outerRadius="32%"
+            label={this.renderCustomizedLabel2}
+            onClick={this.onPieEnter}
             isAnimationActive={false}
             paddingAngle={0}
             labelLine={false}
             stroke=""
           ></Pie>
-
           {/* Logo Outer Ring */}
           <Pie
             activeIndex={activeIndex}
             activeShape={this.renderActiveShape}
             data={centre}
-            cx="50%"
+            cx="48%"
             cy="0%"
-            innerRadius="35%"
-            outerRadius="35.2%"
+            innerRadius="45%"
+            outerRadius="45.5%"
             isAnimationActive={false}
             fill="#7400c0"
             paddingAngle={0}
             labelLine={false}
             stroke=""
+            onClick={this.onPieEnter}
           />
+          {/* {expand &&
+            (theme === "1" ? (
+              <Pie
+                activeIndex={activeIndex}
+                renderActiveShape={{}}
+                startAngle={56}
+                endAngle={-240}
+                data={centre}
+                cx="48%"
+                cy="0%"
+                innerRadius="32%"
+                outerRadius="80%"
+                isAnimationActive={false}
+                fill="rgb(31, 37, 40,0.6)"
+                paddingAngle={0}
+                labelLine={false}
+                stroke=""
+              ></Pie>
+            ) : (
+              <Pie
+                activeIndex={activeIndex}
+                renderActiveShape={{}}
+                startAngle={56}
+                endAngle={-240}
+                data={centre}
+                cx="48%"
+                cy="0%"
+                innerRadius="32%"
+                outerRadius="80%"
+                isAnimationActive={false}
+                fill="rgb(255,255,255,0.6)"
+                paddingAngle={0}
+                labelLine={false}
+                stroke=""
+              ></Pie>
+            ))} */}
         </PieChart>
       </ResponsiveContainer>
     );
@@ -434,6 +563,7 @@ SVMDoughNutChartV2.defaultProps = {
   dimensions: [],
   expand: false,
   expandSubMenu: () => {},
+  switchSubDimension: () => {},
   subDimensions: [],
 };
 SVMDoughNutChartV2.propTypes = {
@@ -441,6 +571,7 @@ SVMDoughNutChartV2.propTypes = {
   selectedDimension: PropTypes.number,
   expand: PropTypes.bool,
   expandSubMenu: PropTypes.func,
+  switchSubDimension: PropTypes.func,
   subDimensions: PropTypes.arrayOf(PropTypes.string),
   dimensions: PropTypes.arrayOf(
     PropTypes.shape({

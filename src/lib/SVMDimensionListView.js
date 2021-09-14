@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import DownArrowIcon from "./images/downArrow-icon.svg";
-import DotLabels from "./DotLabels";
 import DimensionDetailsCard from "./DimensionDetailsCard";
+import WhiteCaretIcon from "./images/headerAngleDown-icon.svg";
 
 class SVMDimensionListView extends Component {
   constructor(props) {
@@ -14,7 +14,6 @@ class SVMDimensionListView extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.expand !== this.props.expand) {
-      console.log(this.props.expand);
       this.setState({
         showExpandedDimension: this.props.expand,
       });
@@ -36,6 +35,10 @@ class SVMDimensionListView extends Component {
       fiscalYear,
       server,
       isActive,
+      clientId,
+      languageCode,
+      theme,
+      selectedSubDimension,
     } = this.props;
     const { showExpandedDimension } = this.state;
 
@@ -44,12 +47,13 @@ class SVMDimensionListView extends Component {
         {showExpandedDimension ? (
           <div className="details-view-section mb-3">
             {/* ----- Dimension Expanded View Start -----  */}
-            <DotLabels />
-
             <DimensionDetailsCard
               server={server}
               fiscalYear={fiscalYear}
+              selectedSubDimension={selectedSubDimension}
               programId={programId}
+              clientId={clientId}
+              languageCode={languageCode}
               {...dimension}
               onClose={this.toggleExpandedDimensionView}
             />
@@ -59,7 +63,18 @@ class SVMDimensionListView extends Component {
           <div className="list-card" onClick={this.toggleExpandedDimensionView}>
             <h6 className="bodytext14-medium-midnight">
               {dimensionName}{" "}
-              {isActive && <img className="float-right" src={DownArrowIcon} />}
+              {isActive &&
+                (theme === "1" ? (
+                  <img
+                    className="white_icon float-right mt-1 cursor"
+                    src={WhiteCaretIcon}
+                  />
+                ) : (
+                  <img
+                    className="float-right cursor mt-1"
+                    src={DownArrowIcon}
+                  />
+                ))}
             </h6>
           </div>
         )}
@@ -78,6 +93,10 @@ SVMDimensionListView.defaultProps = {
   dimension: null,
   text: "",
   toggleView: () => {},
+  clientId: null,
+  languageCode: null,
+  theme: null,
+  selectedSubDimension: null,
 };
 
 SVMDimensionListView.propTypes = {
@@ -90,6 +109,10 @@ SVMDimensionListView.propTypes = {
   dimension: PropTypes.object,
   text: PropTypes.string,
   toggleView: PropTypes.func,
+  clientId: PropTypes.string,
+  languageCode: PropTypes.string,
+  theme: PropTypes.string,
+  selectedSubDimension: PropTypes.number,
 };
 
 export { SVMDimensionListView };

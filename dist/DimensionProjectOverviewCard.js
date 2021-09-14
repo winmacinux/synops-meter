@@ -13,6 +13,8 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _infoCirclePurpleIcon = _interopRequireDefault(require("./images/infoCirclePurple-icon.svg"));
 
+var _infoCirclePurpleDarkIcon = _interopRequireDefault(require("./images/infoCirclePurpleDark-icon.svg"));
+
 var _SVMHorizontalBarChart = _interopRequireDefault(require("./SVMHorizontalBarChart"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -35,7 +37,8 @@ class DimensionProjectOverviewCard extends _react.Component {
     });
 
     this.state = {
-      popover: false
+      popover: false,
+      theme: sessionStorage.getItem("theme")
     };
   }
 
@@ -45,7 +48,8 @@ class DimensionProjectOverviewCard extends _react.Component {
       boiDescription,
       index,
       programDeliveredValue,
-      programTargetValue
+      programTargetValue,
+      unit
     } = this.props;
     return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
       className: "tab-content"
@@ -53,14 +57,16 @@ class DimensionProjectOverviewCard extends _react.Component {
       id: "Popover1",
       className: "project-details-button",
       onClick: this.toggleProjectView
-    }, /*#__PURE__*/_react.default.createElement("img", {
+    }, " ", this.state.theme === "1" ? /*#__PURE__*/_react.default.createElement("img", {
+      className: "pr-2",
+      src: _infoCirclePurpleDarkIcon.default
+    }) : /*#__PURE__*/_react.default.createElement("img", {
       className: "pr-2",
       src: _infoCirclePurpleIcon.default
-    }), "Project Details"), /*#__PURE__*/_react.default.createElement("button", {
-      className: "custom-btn"
-    }, "Custom")), /*#__PURE__*/_react.default.createElement("p", null, boiDescription), /*#__PURE__*/_react.default.createElement(_SVMHorizontalBarChart.default, {
+    }), "Project Details")), /*#__PURE__*/_react.default.createElement("p", null, boiDescription), /*#__PURE__*/_react.default.createElement(_SVMHorizontalBarChart.default, {
       dataset: [programTargetValue, programDeliveredValue],
-      labels: ["$ ".concat(programTargetValue), "$ ".concat(programDeliveredValue)]
+      labels: ["$ ".concat(programTargetValue), "$ ".concat(programDeliveredValue)],
+      unit: unit
     })), /*#__PURE__*/_react.default.createElement("hr", {
       className: "my-2"
     }));
@@ -77,7 +83,8 @@ DimensionProjectOverviewCard.defaultProps = {
   dataset: [],
   labels: [],
   index: 1,
-  openProjectView: () => {}
+  openProjectView: () => {},
+  unit: "$"
 };
 DimensionProjectOverviewCard.propTypes = {
   boi: _propTypes.default.string,
@@ -87,7 +94,8 @@ DimensionProjectOverviewCard.propTypes = {
   dataset: _propTypes.default.arrayOf(_propTypes.default.number),
   labels: _propTypes.default.arrayOf(_propTypes.default.string),
   index: _propTypes.default.number,
-  openProjectView: _propTypes.default.func
+  openProjectView: _propTypes.default.func,
+  unit: _propTypes.default.string
 };
 var _default = DimensionProjectOverviewCard;
 exports.default = _default;

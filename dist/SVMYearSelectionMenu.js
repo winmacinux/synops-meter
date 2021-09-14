@@ -11,6 +11,10 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _Dropdown = _interopRequireDefault(require("react-bootstrap/Dropdown"));
 
+var _rightarrowBlue = _interopRequireDefault(require("./images/rightarrow-blue.svg"));
+
+var _headerAngleDownIcon = _interopRequireDefault(require("./images/headerAngleDown-icon.svg"));
+
 var _dropDownToggleIcon = _interopRequireDefault(require("./images/dropDownToggle-icon.svg"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
@@ -29,13 +33,19 @@ class SVMYearSelectionMenu extends _react.Component {
   constructor(props) {
     super(props);
 
+    _defineProperty(this, "wrapperRef", /*#__PURE__*/(0, _react.createRef)());
+
     _defineProperty(this, "loadFiscalYears", () => {
-      if (this.state.clientId && this.state.languageCode) _axiosInstance.default.get("".concat(this.props.server, "/api/Svm/fiscal-year?clientId=").concat(this.state.clientId, "&languageCode=").concat(this.state.languageCode)).then(res => {
+      if (this.props.clientId && this.props.languageCode) _axiosInstance.default.get("".concat(this.props.server, "Svm/fiscal-year?clientId=").concat(this.props.clientId, "&languageCode=").concat(this.props.languageCode)).then(res => {
         if (res.data.length) {
           this.props.onChange(res.data[0]);
           this.setState({
             years: [...res.data],
             selected: res.data[0]
+          });
+        } else {
+          this.setState({
+            selected: "No Fiscal Years"
           });
         }
       }).catch(err => {
@@ -50,21 +60,59 @@ class SVMYearSelectionMenu extends _react.Component {
         });
         this.props.onChange(value);
       }
+
+      this.setState({
+        subMenuOpen1: !this.state.subMenuOpen1
+      });
+    });
+
+    _defineProperty(this, "onClicksubmenu1", () => this.setState({
+      subMenuOpen1: !this.state.subMenuOpen1
+    }));
+
+    _defineProperty(this, "handleClickOutside", event => {
+      if (this.wrapperRef.current && !this.wrapperRef.current.contains(event.target)) {
+        this.setState({
+          subMenuOpen1: false
+        });
+      }
     });
 
     this.state = {
-      selected: null,
-      years: [],
-      clientId: sessionStorage.getItem("clientId"),
-      languageCode: sessionStorage.getItem("languageCode")
+      selected: "Loading... ",
+      years: []
     };
   }
 
   componentDidMount() {
-    this.loadFiscalYears(); // if (this.props.selected)
-    //   this.setState({
-    //     selected: this.props.selected,
-    //   });
+    if (this.props.readonly) {
+      this.setState({
+        selected: this.props.fixedFiscalYear ? this.props.fixedFiscalYear : "No Fiscal Years",
+        years: this.props.years
+      });
+    } else {
+      this.loadFiscalYears();
+    }
+
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.readonly && prevProps.fixedFiscalYear !== this.props.fixedFiscalYear) {
+      this.setState({
+        selected: this.props.fixedFiscalYear ? this.props.fixedFiscalYear : "No Fiscal Years"
+      });
+    }
+
+    if (this.props.readonly && prevProps.years !== this.props.years) {
+      this.setState({
+        years: this.props.years
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
   }
 
   render() {
@@ -72,15 +120,31 @@ class SVMYearSelectionMenu extends _react.Component {
       selected,
       years
     } = this.state;
+    const {
+      theme,
+      readonly
+    } = this.props;
     return /*#__PURE__*/_react.default.createElement(_Dropdown.default, {
       className: "custom-hover-dropdown mr-2"
+    }, /*#__PURE__*/_react.default.createElement("div", {
+      onClick: this.onClicksubmenu1
     }, /*#__PURE__*/_react.default.createElement(_Dropdown.default.Toggle, {
       variant: "success",
-      id: "dropdown-basic"
-    }, selected, " ", /*#__PURE__*/_react.default.createElement("img", {
+      id: "dropdown-basic",
+      className: readonly && !years.length && "no-filter-disable",
+      disabled: readonly && !years.length
+    }, selected, " ", theme === "1" ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, " ", /*#__PURE__*/_react.default.createElement("img", {
+      className: "arrow_icon",
+      src: _rightarrowBlue.default
+    }), /*#__PURE__*/_react.default.createElement("img", {
+      className: "white_icon",
+      src: _headerAngleDownIcon.default
+    })) : /*#__PURE__*/_react.default.createElement("img", {
+      className: this.state.subMenuOpen1 ? "reverse-icon" : "",
       src: _dropDownToggleIcon.default
-    })), /*#__PURE__*/_react.default.createElement(_Dropdown.default.Menu, {
-      align: "right"
+    }))), /*#__PURE__*/_react.default.createElement(_Dropdown.default.Menu, {
+      align: "right",
+      ref: this.wrapperRef
     }, Array.isArray(years) ? years.map((o, i) => /*#__PURE__*/_react.default.createElement(_Dropdown.default.Item, {
       key: "svm-year-selection-item-".concat(i),
       onClick: () => this.handleChange(o)
@@ -92,9 +156,21 @@ class SVMYearSelectionMenu extends _react.Component {
 exports.SVMYearSelectionMenu = SVMYearSelectionMenu;
 SVMYearSelectionMenu.defaultProps = {
   server: null,
-  onChange: () => {}
+  onChange: () => {},
+  clientId: null,
+  languageCode: null,
+  theme: null,
+  readonly: false,
+  fixedFiscalYear: null,
+  years: []
 };
 SVMYearSelectionMenu.propTypes = {
   server: _propTypes.default.string,
-  onChange: _propTypes.default.func
+  onChange: _propTypes.default.func,
+  clientId: _propTypes.default.string,
+  languageCode: _propTypes.default.string,
+  theme: _propTypes.default.string,
+  readonly: _propTypes.default.bool,
+  fixedFiscalYear: _propTypes.default.string,
+  years: _propTypes.default.arrayOf(_propTypes.default.string)
 };

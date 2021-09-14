@@ -4,7 +4,9 @@ import UpArrowIcon from "./images/upArrow-icon.svg";
 import { Tab, Tabs } from "react-bootstrap";
 import DimensionProjectOverviewCard from "./DimensionProjectOverviewCard";
 import ProjectDetailsCard from "./ProjectDetailsCard";
+import WhiteCaretIcon from "./images/headerAngleDown-icon.svg";
 import axiosInstance from "./axiosInstance";
+import DimensionProjectOverviewSkeleton from "./skeletons/DimensionProjectOverviewSkeleton";
 
 class DimensionDetailsCard extends Component {
   constructor(props) {
@@ -13,10 +15,10 @@ class DimensionDetailsCard extends Component {
       popover: false,
       activeTab: null,
       activeSubDimension: null,
-      clientId: sessionStorage.getItem("clientId"),
-      languageCode: sessionStorage.getItem("languageCode"),
       boiDetails: [],
+      loading: false,
       selectedBoi: null,
+      theme: sessionStorage.getItem("theme"),
     };
   }
 
@@ -33,35 +35,60 @@ class DimensionDetailsCard extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log(this.props);
     if (this.state.activeSubDimension !== prevState.activeSubDimension) {
       this.loadDimensionDetails();
+    }
+    if (this.props.selectedSubDimension !== prevProps.selectedSubDimension) {
+      const subDimension = this.props.subDimension[
+        this.props.selectedSubDimension
+      ]
+        ? this.props.subDimension[this.props.selectedSubDimension]
+        : null;
+
+      if (subDimension !== this.state.activeSubDimension)
+        this.handleTabChange(subDimension);
     }
   }
 
   loadDimensionDetails() {
+    this.setState({
+      loading: true,
+    });
     axiosInstance
-      .get(
-        `${this.props.server}/api/Svm/boi-details?clientId=${this.state.clientId}&languageCode=${this.state.languageCode}&fiscalYear=${this.props.fiscalYear}&programId=${this.props.programId}&dimension=${this.props.dimensionName}&subDimension=${this.state.activeSubDimension}`
-      )
+      .post(`${this.props.server}Svm/boi-details`, {
+        clientId: this.props.clientId,
+        languageCode: this.props.languageCode,
+        fiscalYear: this.props.fiscalYear,
+        programId: this.props.programId,
+        dimension: this.props.dimensionName,
+        subDimension: this.state.activeSubDimension,
+      })
       .then((res) => {
         if (Array.isArray(res.data)) {
           this.setState({
             boiDetails: [...res.data],
+            loading: false,
           });
         }
       })
       .catch((err) => {
         console.log(err);
+        this.setState({
+          loading: false,
+        });
       });
   }
 
   handleTabChange = (key) => {
-    console.log(key);
-    this.setState({
-      activeSubDimension: key,
-      activeTab: key,
-      boiDetails: [],
-    });
+    if (this.state.activeSubDimension !== key)
+      this.setState({
+        activeSubDimension: key,
+        activeTab: key,
+        boiDetails: [],
+        selectedBoi: null,
+        popover: false,
+      });
   };
 
   togglePopover = (boi) => {
@@ -78,6 +105,8 @@ class DimensionDetailsCard extends Component {
       server,
       programId,
       fiscalYear,
+      clientId,
+      languageCode, 
     } = this.props;
     const {
       popover,
@@ -85,21 +114,40 @@ class DimensionDetailsCard extends Component {
       boiDetails,
       selectedBoi,
       activeSubDimension,
+      loading,
     } = this.state;
 
     return (
       <div
         className={
-          popover ? "dimension-collapse-card" : "dimension-collapse-card p-4"
+          popover
+            ? "dimension-collapse-card"
+            : this.props.isGridView
+            ? "dimension-collapse-card p-4 dimension-collapse-card-scroll"
+            : "dimension-collapse-card p-4"
         }
       >
-        <h6 className={popover ? "p-3 bodytext14-medium-midnight" : "bodytext14-medium-midnight"}>
+        <h6
+          className={
+            popover
+              ? "p-3 bodytext14-medium-midnight"
+              : "bodytext14-medium-midnight"
+          }
+        >
           {dimensionName}
-          <img
-            src={UpArrowIcon}
-            className="float-right mt-1 cursor"
-            onClick={this.props.onClose}
-          />
+          {this.state.theme === "1" ? (
+            <img
+              className="white_icon float-right mt-1 cursor"
+              src={WhiteCaretIcon}
+              onClick={this.props.onClose}
+            />
+          ) : (
+            <img
+              src={UpArrowIcon}
+              className="float-right mt-1 cursor"
+              onClick={this.props.onClose}
+            />
+          )}
         </h6>
 
         {!popover ? (
@@ -115,14 +163,21 @@ class DimensionDetailsCard extends Component {
                 title={o}
                 key={`dimension-project-overviewcard-${dimensionName}-${i}`}
               >
-                {boiDetails.map((_o, _i) => (
-                  <DimensionProjectOverviewCard
-                    {..._o}
-                    index={_i + 1}
-                    key={`dimension-project-overviewcard-${o.name}-${_i}`}
-                    openProjectView={() => this.togglePopover(_o.boi)}
-                  />
-                ))}
+                {!loading
+                  ? boiDetails.map((_o, _i) => (
+                      <DimensionProjectOverviewCard
+                        {..._o}
+                        index={_i + 1}
+                        key={`dimension-project-overviewcard-${o.name}-${_i}`}
+                        openProjectView={() => this.togglePopover(_o.boi)}
+                        unit={_o.unit === "USD" ? "$" : _o.unit}
+                      />
+                    ))
+                  : [...new Array(2)].map((o, i) => (
+                      <DimensionProjectOverviewSkeleton
+                        key={`dimension-project-overviewcard-${i}`}
+                      />
+                    ))}
               </Tab>
             ))}
           </Tabs>
@@ -135,6 +190,8 @@ class DimensionDetailsCard extends Component {
             subDimension={activeSubDimension}
             fiscalYear={fiscalYear}
             boi={selectedBoi}
+            clientId={clientId}
+            languageCode={languageCode}
           />
         )}
       </div>
@@ -149,6 +206,10 @@ DimensionDetailsCard.defaultProps = {
   fiscalYear: null,
   subDimension: [],
   onClose: () => {},
+  clientId: null,
+  languageCode: null,
+  selectedSubDimension: null,
+  isGridView: false,
 };
 
 DimensionDetailsCard.propTypes = {
@@ -158,6 +219,10 @@ DimensionDetailsCard.propTypes = {
   fiscalYear: PropTypes.string,
   subDimension: PropTypes.arrayOf(PropTypes.string),
   onClose: PropTypes.func,
+  clientId: PropTypes.string,
+  languageCode: PropTypes.string,
+  selectedSubDimension: PropTypes.number,
+  isGridView: PropTypes.bool,
 };
 
 export { DimensionDetailsCard };

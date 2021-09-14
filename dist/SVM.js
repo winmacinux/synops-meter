@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SVM = void 0;
 
+require("core-js/modules/es.array.reverse.js");
+
 require("core-js/modules/web.dom-collections.iterator.js");
 
 var _react = _interopRequireWildcard(require("react"));
@@ -60,114 +62,201 @@ const DIMENSIONS = [{
   dimensionName: "Financial",
   text: "Financial metrics measure the Financial goals agreed mutually with our clients.",
   value: 100,
-  fill: "#B455AA"
+  fill: "#B455AA",
+  isActive: false,
+  opacity: 0.4
 }, {
   dimensionName: "Experience",
   text: "The transforming experiences we provide for our clients’ employees and customers. Experience metrics focus on delivering a great experience for our partners and communities.",
   value: 100,
-  fill: "#A055F5"
+  fill: "#A055F5",
+  isActive: false,
+  opacity: 0.4
 }, {
   dimensionName: "Sustainability",
   text: "How are we helping our clients achieve their sustainability. Setting and achieving bold goals around sustainability including net-zero emissions, moving to zero waste and plans for water risk achievement by 2025.",
   value: 100,
-  fill: "#595959"
+  fill: "#595959",
+  isActive: false,
+  opacity: 0.4
 }, {
   dimensionName: "Talent",
   text: "Talent metrics measures our ability to upskill talent helping our clients transform the skills of their people",
   value: 100,
-  fill: "#460073"
+  fill: "#460073",
+  isActive: false,
+  opacity: 0.4
 }, {
-  dimensionName: "Inclusion & Diversity",
+  dimensionName: "Inclusion &Diversity",
   text: "Inclusion & Diversity metrics include how we are bringing diverse teams to our clients to help them be more innovative. We will also measure our mutual goals with clients to make progress on inclusion and diversity.",
   value: 100,
-  fill: "#7500C1"
+  fill: "#7500C1",
+  isActive: false,
+  opacity: 0.4
 }, {
   dimensionName: "Custom",
   text: "Customized metrics include innovation, agility or other specific capabilities that are important to our clients, because every client is different.",
   value: 100,
-  fill: "#A100FF"
+  fill: "#A100FF",
+  isActive: false,
+  opacity: 0.4
 }];
+const subDimensionsColors = ["#0087e8", "#ffb023", "#00d58b", "#96968c", "#00b9f2"];
 
 class SVM extends _react.Component {
   constructor(props) {
     super(props);
 
+    _defineProperty(this, "isSVMAvailable", () => {
+      this.setState({
+        isLoading: true
+      });
+
+      _axiosInstance.default.get("".concat(this.props.server, "Svm/is-svmavailable?clientId=").concat(this.props.clientId, "&languageCode=").concat(this.props.languageCode)).then(res => {
+        this.props.handleSVMAvailablity(res.data);
+        this.setState({
+          isLoading: false
+        });
+      }).catch(err => {
+        console.error(err);
+        this.props.handleSVMAvailablity(false);
+        this.setState({
+          isLoading: false
+        });
+      });
+    });
+
     _defineProperty(this, "changeView", () => {
       this.setState(state => ({
         isGridView: !state.isGridView,
         selectedDimension: null,
+        selectedSubDimension: null,
         listDimensionExpanded: false,
-        showExpandedDimension: false
+        showExpandedDimension: false,
+        dimensions: state.dimensions.map(o => _objectSpread(_objectSpread({}, o), {}, {
+          opacity: o.isActive ? 1 : o.opacity
+        }))
       }));
     });
 
     _defineProperty(this, "showExpandedDimensionView", (i, status) => {
-      this.setState({
+      this.setState(state => ({
         showExpandedDimension: status,
-        selectedDimension: i
-      });
+        selectedDimension: i,
+        selectedSubDimension: null,
+        dimensions: state.dimensions.map((o, _i) => _objectSpread(_objectSpread({}, o), {}, {
+          opacity: o.isActive ? i !== _i ? 0.4 : 1 : o.opacity
+        }))
+      }));
     });
 
     _defineProperty(this, "showExpandedDimensionListView", (i, status) => {
-      this.setState({
+      this.setState(state => ({
         listDimensionExpanded: status,
-        selectedDimension: i
-      });
+        selectedDimension: i,
+        selectedSubDimension: null,
+        dimensions: state.dimensions.map((o, _i) => _objectSpread(_objectSpread({}, o), {}, {
+          opacity: o.isActive ? i !== _i ? 0.4 : 1 : o.opacity
+        }))
+      }));
+    });
+
+    _defineProperty(this, "onWheelSwitchSubDimension", subDimensionIndex => {
+      if (this.selectedDimension !== null && subDimensionIndex !== null && subDimensionIndex !== this.state.selectedSubDimension) {
+        this.setState({
+          selectedSubDimension: subDimensionIndex
+        });
+      }
     });
 
     _defineProperty(this, "onWheelDimensionClick", i => {
+      if ([null, undefined].includes(i)) {
+        this.setState(state => ({
+          showExpandedDimension: false,
+          listDimensionExpanded: false,
+          selectedDimension: null,
+          selectedSubDimension: null,
+          dimensions: state.dimensions.map(o => _objectSpread(_objectSpread({}, o), {}, {
+            opacity: o.isActive ? 1 : o.opacity
+          }))
+        }));
+        return;
+      } else if (this.state.selectedDimension !== i && (this.state.showExpandedDimension || this.state.listDimensionExpanded)) {
+        return;
+      }
+
+      const expand = this.state.dimensions[i] && this.state.dimensions[i].isActive;
+
       if (this.state.isGridView) {
         if (this.state.showExpandedDimension) {
-          this.setState({
+          this.setState(state => ({
             showExpandedDimension: false,
-            selectedDimension: null
-          });
+            dimensions: state.dimensions.map(o => _objectSpread(_objectSpread({}, o), {}, {
+              opacity: o.isActive ? 1 : o.opacity
+            })),
+            selectedDimension: null,
+            selectedSubDimension: null
+          }));
         } else {
-          this.setState({
-            showExpandedDimension: this.state.dimensions[i] && this.state.dimensions[i].isActive,
-            selectedDimension: i
-          });
+          this.setState(state => ({
+            showExpandedDimension: expand,
+            dimensions: state.dimensions.map((o, _i) => _objectSpread(_objectSpread({}, o), {}, {
+              opacity: expand && o.isActive && i !== _i ? 0.4 : o.opacity
+            })),
+            selectedDimension: expand ? i : null,
+            selectedSubDimension: null
+          }));
         }
       } else {
         if (this.state.listDimensionExpanded) {
-          this.setState({
+          this.setState(state => ({
             listDimensionExpanded: false,
-            selectedDimension: null
-          });
+            dimensions: state.dimensions.map(o => _objectSpread(_objectSpread({}, o), {}, {
+              opacity: o.isActive ? 1 : o.opacity
+            })),
+            selectedDimension: null,
+            selectedSubDimension: null
+          }));
         } else {
-          this.setState({
-            listDimensionExpanded: this.state.dimensions[i] && this.state.dimensions[i].isActive,
-            selectedDimension: i
-          });
+          this.setState(state => ({
+            listDimensionExpanded: expand,
+            dimensions: state.dimensions.map((o, _i) => _objectSpread(_objectSpread({}, o), {}, {
+              opacity: expand && o.isActive && i !== _i ? 0.4 : o.opacity
+            })),
+            selectedDimension: expand ? i : null,
+            selectedSubDimension: null
+          }));
         }
       }
     });
 
     _defineProperty(this, "hideExpandedDimensionView", () => {
-      this.setState({
+      this.setState(state => ({
         showExpandedDimension: false,
         listDimensionExpanded: false,
-        selectedDimension: null
-      });
+        selectedDimension: null,
+        selectedSubDimension: null,
+        dimensions: state.dimensions.map(o => _objectSpread(_objectSpread({}, o), {}, {
+          opacity: o.isActive ? 1 : o.opacity
+        }))
+      }));
     });
 
     _defineProperty(this, "handleProgramChange", programId => {
-      console.log(programId);
       if (programId) this.setState({
         programId
       });
     });
 
     _defineProperty(this, "handleFiscalYearChange", fiscalYear => {
-      console.log(fiscalYear);
       if (fiscalYear) this.setState({
         fiscalYear
       });
     });
 
     _defineProperty(this, "loadDimensionDetails", () => {
-      if (this.state.programId && this.state.fiscalYear) {
-        _axiosInstance.default.get("".concat(this.props.server, "/api/Svm/dimension-details?clientId=").concat(this.state.clientId, "&languageCode=").concat(this.state.languageCode, "&fiscalYear=").concat(this.state.fiscalYear, "&programId=").concat(this.state.programId)).then(res => {
+      if (this.props.server && this.state.programId && this.state.fiscalYear) {
+        _axiosInstance.default.get("".concat(this.props.server, "Svm/dimension-details?clientId=").concat(this.props.clientId, "&languageCode=").concat(this.props.languageCode, "&fiscalYear=").concat(this.state.fiscalYear, "&programId=").concat(this.state.programId)).then(res => {
           if (Array.isArray(res.data)) {
             const updatedDimensions = DIMENSIONS.map(o => {
               let dimension = res.data.filter(_o => _o.dimensionName.toLowerCase() === o.dimensionName.toLowerCase());
@@ -175,17 +264,22 @@ class SVM extends _react.Component {
               if (dimension.length) {
                 dimension = dimension[0];
                 return _objectSpread(_objectSpread(_objectSpread({}, o), dimension), {}, {
-                  isActive: true
+                  isActive: true,
+                  cursor: "pointer",
+                  opacity: 1
                 });
               } else {
                 return _objectSpread(_objectSpread({}, o), {}, {
-                  isActive: false
+                  isActive: false,
+                  fill: "#e7e7e7",
+                  opacity: 0.4
                 });
               }
             });
             this.setState({
               dimensions: updatedDimensions,
               selectedDimension: null,
+              selectedSubDimension: null,
               listDimensionExpanded: false,
               showExpandedDimension: false
             });
@@ -194,6 +288,32 @@ class SVM extends _react.Component {
           console.log(err);
         });
       }
+    });
+
+    _defineProperty(this, "loadProgramDetails", () => {
+      _axiosInstance.default.get("".concat(this.props.server, "Svm/program-year?clientId=").concat(this.props.clientId, "&languageCode=").concat(this.props.languageCode, "&offeringId=").concat(this.state.programId)).then(res => {
+        const {
+          programId,
+          programName,
+          fiscalYear
+        } = res.data;
+
+        if (programId !== null && Array.isArray(fiscalYear) && fiscalYear.length) {
+          this.setState({
+            fixedProgramName: programName,
+            programId,
+            fiscalYears: fiscalYear,
+            fiscalYear: fiscalYear[0]
+          });
+        } else {
+          this.setState({
+            fixedProgramName: programName,
+            fiscalYears: []
+          });
+        }
+      }).catch(err => {
+        console.log(err);
+      });
     });
 
     this.state = {
@@ -205,16 +325,55 @@ class SVM extends _react.Component {
       showExpandedDimension: false,
       listDimensionExpanded: false,
       selectedDimension: null,
+      selectedSubDimension: null,
       accentureKeyFacts: null,
-      clientId: sessionStorage.getItem("clientId"),
-      languageCode: sessionStorage.getItem("languageCode")
+      error: null,
+      isLoading: false,
+      fixedProgramName: null
     };
+  }
+
+  componentDidMount() {
+    if (!this.props.server) {
+      this.setState({
+        error: "Missing Server API Configuration"
+      });
+      this.props.handleSVMAvailablity(false);
+    } else {
+      this.isSVMAvailable();
+    }
+
+    if (this.props.offeringId) {
+      this.setState({
+        programId: this.props.offeringId
+      }, () => {
+        this.loadProgramDetails();
+      });
+    } // if (this.props.fiscalYear) {
+    //   this.setState({
+    //     fiscalYear: this.props.fiscalYear,
+    //   });
+    // }
+
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.programId !== this.state.programId || prevState.fiscalYear !== this.state.fiscalYear) {
       this.loadDimensionDetails();
     }
+
+    if (prevProps.offeringId !== this.props.offeringId) {
+      this.setState({
+        programId: this.props.offeringId
+      }, () => {
+        this.loadProgramDetails();
+      });
+    } // if (prevProps.fiscalYear !== this.props.fiscalYear) {
+    //   this.setState({
+    //     fiscalYear: this.props.fiscalYear,
+    //   });
+    // }
+
   }
 
   render() {
@@ -224,100 +383,157 @@ class SVM extends _react.Component {
       showExpandedDimension,
       selectedDimension,
       fiscalYear,
+      fiscalYears,
       programId,
-      listDimensionExpanded
+      listDimensionExpanded,
+      error,
+      isLoading,
+      fixedProgramName,
+      selectedSubDimension
     } = this.state;
     const {
       server,
-      shrink
+      shrink,
+      clientId,
+      languageCode,
+      theme,
+      readonly
     } = this.props;
-    return /*#__PURE__*/_react.default.createElement("div", {
-      className: "row mt-5"
-    }, /*#__PURE__*/_react.default.createElement("div", {
-      className: "col-lg-4"
-    }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", {
-      className: "synops-heading"
-    }, "SynOps Value Meter"), /*#__PURE__*/_react.default.createElement("div", {
+    return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, error ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
+      className: "col-lg-12"
+    }, /*#__PURE__*/_react.default.createElement("h3", {
+      className: "header20-semibold-midnight"
+    }, "360\xB0 Value Meter")), /*#__PURE__*/_react.default.createElement("div", {
+      className: "col-lg-12 d-flex justify-content-center align-items-center",
       style: {
-        width: "100%",
-        height: "500px"
+        height: 300
       }
-    }, /*#__PURE__*/_react.default.createElement(_SVMDoughNutChartV.SVMDoughNutChartV2, {
+    }, /*#__PURE__*/_react.default.createElement("h6", {
+      style: {
+        color: "red"
+      }
+    }, "SVM Error: ", error))) : !isLoading && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
+      className: "col-lg-4"
+    }, /*#__PURE__*/_react.default.createElement("div", {
+      "data-tut": "SVM_TP"
+    }, /*#__PURE__*/_react.default.createElement("h3", {
+      className: "header20-semibold-midnight"
+    }, "360\xB0 Value Meter"), /*#__PURE__*/_react.default.createElement(_SVMDoughNutChartV.SVMDoughNutChartV2, {
+      theme: theme,
       expandSubMenu: this.onWheelDimensionClick,
+      switchSubDimension: this.onWheelSwitchSubDimension,
       dimensions: dimensions,
       expand: showExpandedDimension || listDimensionExpanded,
       selectedDimension: selectedDimension,
-      subDimensions: [...(dimensions[selectedDimension] && Array.isArray(dimensions[selectedDimension].subDimension) ? dimensions[selectedDimension].subDimension.map(o => ({
+      subDimensions: [...(dimensions[selectedDimension] && Array.isArray(dimensions[selectedDimension].subDimension) ? dimensions[selectedDimension].subDimension.map((o, i) => ({
         name: o,
         value: 100,
-        fill: dimensions[selectedDimension].fill
-      })) : [])]
-    })))), /*#__PURE__*/_react.default.createElement("div", {
-      className: "col-lg-8"
+        // fill: dimensions[selectedDimension].fill,
+        fill: subDimensionsColors[i],
+        index: i
+      })) : [])].reverse()
+    }))), /*#__PURE__*/_react.default.createElement("div", {
+      className: shrink ? "col-lg-5 pl-0" : "col-lg-8 pl-0 pr-4"
     }, /*#__PURE__*/_react.default.createElement("div", {
       className: "dimension-section"
     }, /*#__PURE__*/_react.default.createElement("div", {
       className: "dropdown-section"
     }, /*#__PURE__*/_react.default.createElement(_SVMOfferingFilterMenu.SVMOfferingFilterMenu, {
       server: server,
-      onChange: this.handleProgramChange
+      onChange: this.handleProgramChange,
+      clientId: clientId,
+      languageCode: languageCode,
+      theme: theme,
+      readonly: readonly,
+      fixedProgramName: fixedProgramName
     }), /*#__PURE__*/_react.default.createElement(_SVMYearSelectionMenu.SVMYearSelectionMenu, {
       server: server,
-      onChange: this.handleFiscalYearChange
+      onChange: this.handleFiscalYearChange,
+      clientId: clientId,
+      languageCode: languageCode,
+      theme: theme,
+      readonly: readonly,
+      years: fiscalYears,
+      fixedFiscalYear: Array.isArray(fiscalYears) && fiscalYears.length ? fiscalYears[0] : null
     }), /*#__PURE__*/_react.default.createElement("span", {
       className: "ml-2 border-left"
     }, isGridView ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("img", {
-      className: "mr-2 mb-1 ml-3",
+      className: "mr-2 mb-1 ml-3 cursor",
       src: _gridBlueIcon.default
     }), /*#__PURE__*/_react.default.createElement("img", {
-      className: "mr-2 mb-1",
+      className: "mr-2 mb-1 cursor",
       src: _listGreyIcon.default,
       onClick: this.changeView
     })) : /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("img", {
-      className: "mr-2 mb-1 ml-3",
+      className: "mr-2 mb-1 ml-3 cursor",
       src: _gridGreyIcon.default,
       onClick: this.changeView
     }), /*#__PURE__*/_react.default.createElement("img", {
-      className: "mr-2 mb-1",
+      className: "mr-2 mb-1 cursor",
       src: _listBlueIcon.default
     })))), /*#__PURE__*/_react.default.createElement("div", {
       className: "dimension"
     }, /*#__PURE__*/_react.default.createElement("h2", null, "Dimension"), showExpandedDimension && dimensions[selectedDimension] && dimensions[selectedDimension].isActive ? /*#__PURE__*/_react.default.createElement("div", {
-      className: "details-view-section"
+      className: "details-view-section mr-3"
     }, /*#__PURE__*/_react.default.createElement(_DotLabels.default, null), /*#__PURE__*/_react.default.createElement(_DimensionDetailsCard.DimensionDetailsCard, _extends({
+      isGridView: isGridView,
+      theme: theme,
       server: server,
       fiscalYear: fiscalYear,
       programId: programId
     }, dimensions[selectedDimension], {
-      onClose: this.hideExpandedDimensionView
+      onClose: this.hideExpandedDimensionView,
+      selectedSubDimension: selectedSubDimension,
+      clientId: clientId,
+      languageCode: languageCode
     }))) : /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
-      className: "row"
+      className: isGridView ? "row scroll-view" : shrink ? "row scroll-view" : "row scroll-view  mr-2"
     }, isGridView ? dimensions === null || dimensions === void 0 ? void 0 : dimensions.map((o, i) => /*#__PURE__*/_react.default.createElement("div", {
-      className: shrink ? "col-6 px-0" : "col-4 px-0",
+      className: shrink ? "col-6 pr-0" : "col-4 pr-0",
       key: "svm-dimension-card-".concat(i)
     }, /*#__PURE__*/_react.default.createElement(_SVMDimensionCard.SVMDimensionCard, _extends({}, o, {
+      theme: theme,
       toggleView: status => this.showExpandedDimensionView(i, status)
     })))) : /*#__PURE__*/_react.default.createElement("div", {
-      className: "col px-0"
-    }, dimensions === null || dimensions === void 0 ? void 0 : dimensions.map((o, i) => /*#__PURE__*/_react.default.createElement(_SVMDimensionListView.SVMDimensionListView, _extends({}, o, {
+      className: "col pr-0"
+    }, selectedDimension !== null && /*#__PURE__*/_react.default.createElement("div", {
+      className: "details-view-section"
+    }, /*#__PURE__*/_react.default.createElement(_DotLabels.default, null)), dimensions === null || dimensions === void 0 ? void 0 : dimensions.map((o, i) => o.isActive && /*#__PURE__*/_react.default.createElement(_SVMDimensionListView.SVMDimensionListView, _extends({}, o, {
+      theme: theme,
       server: server,
       fiscalYear: fiscalYear,
       programId: programId,
       dimension: o,
       expand: o.isActive && selectedDimension === i,
+      clientId: clientId,
+      languageCode: languageCode,
+      selectedSubDimension: selectedSubDimension,
       toggleView: status => status ? this.showExpandedDimensionListView(i, status) : this.hideExpandedDimensionView(),
       key: "svm-dimension-list-view-".concat(i)
-    }))))))))));
+    })))))))))));
   }
 
 }
 
 exports.SVM = SVM;
 SVM.defaultProps = {
-  server: "http://localhost:50647",
-  shrink: false
+  server: null,
+  shrink: false,
+  handleSVMAvailablity: () => {},
+  offeringId: null,
+  fiscalYear: null,
+  clientId: null,
+  languageCode: null,
+  theme: null
 };
 SVM.propTypes = {
   server: _propTypes.default.string,
-  shrink: _propTypes.default.bool
+  shrink: _propTypes.default.bool,
+  handleSVMAvailablity: _propTypes.default.func,
+  offeringId: _propTypes.default.string,
+  fiscalYear: _propTypes.default.string,
+  readonly: _propTypes.default.bool,
+  clientId: _propTypes.default.string,
+  languageCode: _propTypes.default.string,
+  theme: _propTypes.default.string
 };

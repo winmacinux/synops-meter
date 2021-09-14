@@ -7,9 +7,13 @@ import "chartjs-plugin-datalabels";
 class SVMProjectVerticalChart extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state={
+      theme: sessionStorage.getItem("theme")
+      }
   }
   render() {
+    const { unit } = this.props;
+
     Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
       draw() {
         const ctx = this._chart.ctx;
@@ -165,8 +169,8 @@ class SVMProjectVerticalChart extends Component {
       labels: ["Identified", "Delivered"],
       datasets: [
         {
-          backgroundColor: ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
-          borderColor: ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
+          backgroundColor:  this.state.theme === "1" ? ["rgb(161, 0, 255)", "rgb(133, 215, 255)"] : ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
+          borderColor: this.state.theme === "1" ? ["rgb(161, 0, 255)", "rgb(133, 215, 255)"] : ["rgb(117, 0, 192)", "rgb(133, 215, 255)"],
           borderWidth: 0.1,
           barPercentage: 0.1,
           data: [...this.props.dataset],
@@ -203,7 +207,7 @@ class SVMProjectVerticalChart extends Component {
                 return n;
               }
               let res = formatNumber(value) === null ? "" : formatNumber(value);
-              return res;
+              return res + ` ${unit}`;
             },
             color: "rgb(156, 106, 222)",
             font: {
@@ -220,7 +224,7 @@ class SVMProjectVerticalChart extends Component {
     return (
       <div className="svm-project-details-chart">
         <Bar
-          height="80px"
+          height="130px"
           data={state}
           options={{
             cornerRadius: 15,
@@ -228,28 +232,28 @@ class SVMProjectVerticalChart extends Component {
             layout: {
               padding: {
                 top: 20,
-                left: 0,
+                left: -20,
                 right: 0,
-                bottom:5,
-              }
-              },  
-            annotation: {
-              annotations: [{
-                type: 'line',
-                mode: 'horizontal',
-                scaleID: 'y-axis-0',
-                value: this.props.dataset[0],
-                borderColor: 'rgb(181, 192, 202)',
-                borderWidth: 0.5,                 
-              },{
-                type: 'line',
-                mode: 'horizontal',
-                scaleID: 'y-axis-0',
-                value:this.props.dataset[1],
-                borderColor: 'rgb(181, 192, 202)',
-                borderWidth: 0.5, 
-              }],
+                bottom: 5,
+              },
             },
+            // annotation: {
+            //   annotations: [{
+            //     type: 'line',
+            //     mode: 'horizontal',
+            //     scaleID: 'y-axis-0',
+            //     value: this.props.dataset[0],
+            //     borderColor: 'rgb(181, 192, 202)',
+            //     borderWidth: 0.5,
+            //   },{
+            //     type: 'line',
+            //     mode: 'horizontal',
+            //     scaleID: 'y-axis-0',
+            //     value:this.props.dataset[1],
+            //     borderColor: 'rgb(181, 192, 202)',
+            //     borderWidth: 0.5,
+            //   }],
+            // },
             legend: {
               display: false,
             },
@@ -263,19 +267,26 @@ class SVMProjectVerticalChart extends Component {
               xAxes: [
                 {
                   display: true,
-                  barThickness: 24, 
+                  barThickness: 24,
                   scaleLabel: {
                     display: true,
                   },
                   gridLines: {
-                    display: true,
+                    display: this.state.theme === "1" ? true : false,
                     drawBorder: true,
                     drawOnChartArea: false,
                     drawTicks: false,
+                    color:
+                      this.state.theme === "1"
+                        ? "rgb(181, 192, 202)"
+                        : "rgb(181, 192, 202,0.5)",
                   },
                   ticks: {
                     padding: 15,
-                    fontColor: "rgb(45, 58, 75)",
+                    fontColor:
+                      this.state.theme === "1"
+                        ? "rgb(181, 192, 202)"
+                        : "rgb(45, 58, 75)",
                     fontSize: 12,
                     fontFamily: "Graphik-Medium",
                     fontWeight: "500",
@@ -289,18 +300,22 @@ class SVMProjectVerticalChart extends Component {
                     display: true,
                   },
                   gridLines: {
-                    display: false,
-                    drawBorder: true,
-                    drawOnChartArea: false,
+                    display: true,
+                    color:
+                      this.state.theme === "1"
+                        ? "rgb(181, 192, 202)"
+                        : "rgb(181, 192, 202,0.5)",
+                    drawBorder: false,
+                    drawOnChartArea: true,
                     drawTicks: false,
                   },
                   ticks: {
                     padding: 15,
                     fontColor: "rgb(145, 158, 171)",
                     fontSize: 12,
-                    beginAtZero: true, 
-                    maxTicksLimit: 6,                 
-                    minTicksLimit: 5,              
+                    beginAtZero: true,
+                    maxTicksLimit: 6,
+                    minTicksLimit: 5,
                     callback: function(value) {
                       var ranges = [
                         { divider: 1e12, suffix: "T" },
@@ -337,8 +352,14 @@ class SVMProjectVerticalChart extends Component {
   }
 }
 
+SVMProjectVerticalChart.defaultProps = {
+  dataset: [],
+  unit: "$",
+};
+
 SVMProjectVerticalChart.propTypes = {
   dataset: PropTypes.arrayOf(PropTypes.string),
+  unit: PropTypes.string,
 };
 
 export { SVMProjectVerticalChart };

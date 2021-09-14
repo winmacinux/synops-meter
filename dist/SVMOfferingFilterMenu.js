@@ -7,6 +7,8 @@ exports.SVMOfferingFilterMenu = void 0;
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
+require("core-js/modules/es.string.includes.js");
+
 var _react = _interopRequireWildcard(require("react"));
 
 var _Dropdown = _interopRequireDefault(require("react-bootstrap/Dropdown"));
@@ -27,9 +29,15 @@ var _downAccordianWhiteIcon = _interopRequireDefault(require("./images/downAccor
 
 var _i18next = _interopRequireDefault(require("i18next"));
 
+var _rightarrowBlue = _interopRequireDefault(require("./images/rightarrow-blue.svg"));
+
+var _headerAngleDownIcon = _interopRequireDefault(require("./images/headerAngleDown-icon.svg"));
+
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _axiosInstance = _interopRequireDefault(require("./axiosInstance"));
+
+var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43,27 +51,37 @@ class SVMOfferingFilterMenu extends _react.Component {
   constructor(props) {
     super(props);
 
+    _defineProperty(this, "wrapperRef", /*#__PURE__*/(0, _react.createRef)());
+
     _defineProperty(this, "loadOfferings", () => {
-      if (this.state.clientId && this.state.languageCode) _axiosInstance.default.get("".concat(this.props.server, "/api/Svm/program-list?clientId=").concat(this.state.clientId, "&languageCode=").concat(this.state.languageCode)).then(res => {
+      if (this.props.clientId && this.props.languageCode) _axiosInstance.default.get("".concat(this.props.server, "Svm/program-list?clientId=").concat(this.props.clientId, "&languageCode=").concat(this.props.languageCode)).then(res => {
         if (res.data.length) {
           let selectedOffering = res.data.filter((o, i) => o.isFavorite);
           let selected = null;
           let bookmark = null;
+          let selectedSubOffering = null;
 
           if (selectedOffering.length) {
             selectedOffering = selectedOffering[0];
             selected = selectedOffering.programName;
             bookmark = selectedOffering.programId;
+            selectedSubOffering = selectedOffering.subOffering ? selectedOffering.subOffering : null;
             this.props.onChange(selectedOffering.programId);
           } else {
-            selected = res.data[0].programName;
+            selected = res.data[0] && res.data[0].programName;
+            selectedSubOffering = res.data[0] && res.data[0].subOffering ? res.data[0].subOffering : null;
             this.props.onChange(res.data[0].programId);
           }
 
           this.setState({
             offerings: [...res.data],
             selected,
-            bookmark
+            bookmark,
+            selectedSubOffering
+          });
+        } else {
+          this.setState({
+            selected: "No Programs"
           });
         }
       }).catch(err => {
@@ -76,7 +94,7 @@ class SVMOfferingFilterMenu extends _react.Component {
       e.preventDefault();
       const bookmark = !(this.state.bookmark === programId);
 
-      _axiosInstance.default.post("".concat(this.props.server, "/api/Svm/favourite-program?clientId=").concat(this.state.clientId, "&programId=").concat(programId, "&languageCode=").concat(this.state.languageCode, "&isFavorite=").concat(bookmark)).then(res => {// Get the lastest data from the
+      _axiosInstance.default.post("".concat(this.props.server, "Svm/favourite-program?clientId=").concat(this.props.clientId, "&programId=").concat(programId, "&languageCode=").concat(this.props.languageCode, "&isFavorite=").concat(bookmark)).then(res => {// Get the lastest data from the
       }).catch(err => {
         console.log(err);
       });
@@ -86,12 +104,14 @@ class SVMOfferingFilterMenu extends _react.Component {
       });
     });
 
-    _defineProperty(this, "handleAccordian", (e, programId, subOffering) => {
+    _defineProperty(this, "handleAccordian", (e, programId, subOffering, index) => {
       if (subOffering) {
-        // e.stopPropagation();
         e.preventDefault();
+        e.stopPropagation();
+        const isExpanded = this.state.collapse.includes(programId);
+        (0, _jquery.default)(".collapse.collapseItem".concat(index)).collapse(isExpanded ? "hide" : "show");
         this.setState(old => ({
-          collapse: old.collapse !== programId ? programId : null
+          collapse: isExpanded ? old.collapse.filter(o => o != programId) : [...old.collapse, programId]
         }));
       }
     });
@@ -102,67 +122,118 @@ class SVMOfferingFilterMenu extends _react.Component {
 
         if (selectedOffering.length) {
           const selected = selectedOffering[0].programName;
+          const selectedSubOffering = selectedOffering[0].subOffering ? selectedOffering[0].subOffering : null;
           this.setState({
-            selected
+            selected,
+            selectedSubOffering
           });
           this.props.onChange(value);
         }
+      }
+
+      this.setState({
+        subMenuOpen1: !this.state.subMenuOpen1
+      });
+    });
+
+    _defineProperty(this, "onClicksubmenu1", () => this.setState({
+      subMenuOpen1: !this.state.subMenuOpen1
+    }));
+
+    _defineProperty(this, "handleClickOutside", event => {
+      if (this.wrapperRef.current && !this.wrapperRef.current.contains(event.target)) {
+        this.setState({
+          subMenuOpen1: false
+        });
       }
     });
 
     this.state = {
       bookmark: null,
-      collapse: null,
-      selected: null,
+      collapse: [],
+      selected: "Loading... ",
       offerings: [],
-      clientId: sessionStorage.getItem("clientId"),
-      languageCode: sessionStorage.getItem("languageCode")
+      selectedSubOffering: null
     };
   }
 
   componentDidMount() {
-    this.loadOfferings(); // Mapping Bookmark on Page Loading
-    // if (this.props.bookmarkedOffering) {
-    //   if (Array.isArray(this.props.offerings)) {
-    //     const selectedOffering = this.props.offerings.filter(
-    //       (o, i) => o.programId === this.props.bookmarkedOffering
-    //     );
-    //     if (selectedOffering.length) {
-    //       const selected = selectedOffering[0].name;
-    //       this.setState({
-    //         selected,
-    //         bookmark: this.props.bookmarkedOffering,
-    //       });
-    //     }
-    //   }
-    // } else {
-    //   const selected = "Select Offering";
-    //   this.setState({
-    //     selected,
-    //   });
-    // }
+    if (this.props.readonly) {
+      this.setState({
+        selected: this.props.fixedProgramName ? this.props.fixedProgramName : "No Programs"
+      });
+    } else {
+      this.loadOfferings();
+    }
+
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.readonly && prevProps.fixedProgramName !== this.props.fixedProgramName) {
+      this.setState({
+        selected: this.props.fixedProgramName ? this.props.fixedProgramName : "No Programs"
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
   }
 
   render() {
     const {
       bookmark,
       selected,
-      offerings
+      offerings,
+      selectedSubOffering
     } = this.state;
+    const {
+      theme,
+      readonly
+    } = this.props;
     return /*#__PURE__*/_react.default.createElement(_Dropdown.default, {
       className: "custom-hover-dropdown mr-2"
+    }, selectedSubOffering && /*#__PURE__*/_react.default.createElement(_reactTooltip.default, {
+      place: "left",
+      type: "dark",
+      effect: "solid",
+      id: "OfferingTooltip",
+      className: "svm-offering-tooltip"
+    }, /*#__PURE__*/_react.default.createElement("span", null, _i18next.default.t(selectedSubOffering))), " ", /*#__PURE__*/_react.default.createElement("div", {
+      onClick: this.onClicksubmenu1
     }, /*#__PURE__*/_react.default.createElement(_Dropdown.default.Toggle, {
       variant: "success",
-      id: "dropdown-basic"
-    }, selected, " ", /*#__PURE__*/_react.default.createElement("img", {
+      id: "dropdown-basic",
+      className: readonly && "no-filter-disable",
+      disabled: readonly,
+      "data-tip": true,
+      "data-for": "OfferingTooltip"
+    }, selected, theme === "1" ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, " ", /*#__PURE__*/_react.default.createElement("img", {
+      className: this.state.subMenuOpen1 ? "reverse arrow_icon" : "arrow_icon",
+      src: _rightarrowBlue.default
+    }), /*#__PURE__*/_react.default.createElement("img", {
+      className: this.state.subMenuOpen1 ? "reverse-icon white_icon" : "white_icon",
+      src: _headerAngleDownIcon.default
+    })) : /*#__PURE__*/_react.default.createElement("img", {
+      className: this.state.subMenuOpen1 ? "reverse-icon" : "",
       src: _dropDownToggleIcon.default
-    })), /*#__PURE__*/_react.default.createElement(_Dropdown.default.Menu, {
-      align: "right"
+    }))), /*#__PURE__*/_react.default.createElement(_Dropdown.default.Menu, {
+      align: "right",
+      className: "padding-dropdown",
+      ref: this.wrapperRef
     }, offerings === null || offerings === void 0 ? void 0 : offerings.map((o, i) => /*#__PURE__*/_react.default.createElement(_react.default.Fragment, {
       key: "svm-menu-dropdown-offerings-".concat(i)
     }, /*#__PURE__*/_react.default.createElement(_Dropdown.default.Item, {
       onClick: () => this.handleChange(o.programId)
-    }, o.subOffering ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("a", null, this.state.collapse === o.programId ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("img", {
+    }, /*#__PURE__*/_react.default.createElement("div", {
+      className: "d-flex"
+    }, o.subOffering ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", {
+      className: "toggler",
+      "data-toggle": "collapse",
+      "data-target": "#collapseItem".concat(i),
+      onClick: e => this.handleAccordian(e, o.programId, o.subOffering, i)
+    }, this.state.collapse.includes(o.programId) ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("img", {
       className: "right-black down",
       src: _rightAccordianIcon.default
     }), /*#__PURE__*/_react.default.createElement("img", {
@@ -170,16 +241,18 @@ class SVMOfferingFilterMenu extends _react.Component {
       src: _downAccordianWhiteIcon.default
     })) : /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("img", {
       className: "right-black",
+      onClick: e => this.handleAccordian(e, o.programId, o.subOffering, i),
+      "data-toggle": "collapse",
+      "data-target": "#collapseItem".concat(i),
       src: _rightAccordianIcon.default
     }), /*#__PURE__*/_react.default.createElement("img", {
       className: "right-white",
-      src: _rightAccordianWhiteIcon.default
-    }))), /*#__PURE__*/_react.default.createElement("div", {
+      onClick: e => this.handleAccordian(e, o.programId, o.subOffering, i),
       "data-toggle": "collapse",
       "data-target": "#collapseItem".concat(i),
-      onClick: e => this.handleAccordian(e, o.programId, o.subOffering)
-    }, o.programName)) : /*#__PURE__*/_react.default.createElement("div", null, o.programName), /*#__PURE__*/_react.default.createElement("a", {
-      className: "pl-3 bookmark",
+      src: _rightAccordianWhiteIcon.default
+    }))), /*#__PURE__*/_react.default.createElement("div", null, o.programName)) : /*#__PURE__*/_react.default.createElement("div", null, o.programName)), /*#__PURE__*/_react.default.createElement("a", {
+      className: "px-2 bookmark",
       "data-tip": true,
       "data-for": "bookmark"
     }, bookmark === o.programId ? /*#__PURE__*/_react.default.createElement("img", {
@@ -189,10 +262,10 @@ class SVMOfferingFilterMenu extends _react.Component {
       src: _bookmarkWhiteIcon.default,
       onClick: e => this.handleBookmark(e, o.programId)
     }))), o.subOffering && /*#__PURE__*/_react.default.createElement("div", {
-      class: "collapse dropdown-collapse",
+      className: "collapse dropdown-collapse collapseItem".concat(i),
       id: "collapseItem".concat(i)
     }, o.subOffering))), /*#__PURE__*/_react.default.createElement(_reactTooltip.default, {
-      place: "left",
+      place: "bottom",
       type: "dark",
       effect: "solid",
       id: "bookmark",
@@ -206,10 +279,20 @@ exports.SVMOfferingFilterMenu = SVMOfferingFilterMenu;
 SVMOfferingFilterMenu.defaultProps = {
   server: null,
   selected: "",
-  onChange: () => {}
+  onChange: () => {},
+  clientId: null,
+  languageCode: null,
+  theme: null,
+  readonly: false,
+  fixedProgramName: null
 };
 SVMOfferingFilterMenu.propTypes = {
   server: _propTypes.default.string,
   selected: _propTypes.default.string,
-  onChange: _propTypes.default.func
+  onChange: _propTypes.default.func,
+  clientId: _propTypes.default.string,
+  languageCode: _propTypes.default.string,
+  theme: _propTypes.default.string,
+  readonly: _propTypes.default.bool,
+  fixedProgramName: _propTypes.default.string
 };

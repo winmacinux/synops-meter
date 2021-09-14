@@ -19,6 +19,8 @@ var _closeGreyIcon = _interopRequireDefault(require("./images/closeGrey-icon.svg
 
 var _axiosInstance = _interopRequireDefault(require("./axiosInstance"));
 
+var _ProjectDetailsSkeleton = _interopRequireDefault(require("./skeletons/ProjectDetailsSkeleton"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -32,10 +34,23 @@ class ProjectDetailsCard extends _react.Component {
     super(props);
 
     _defineProperty(this, "loadProjectDetails", () => {
-      _axiosInstance.default.get("".concat(this.props.server, "/api/Svm/project-details?clientId=").concat(this.state.clientId, "&languageCode=").concat(this.state.languageCode, "&fiscalYear=").concat(this.props.fiscalYear, "&programId=").concat(this.props.programId, "&dimension=").concat(this.props.dimension, "&subDimension=").concat(this.props.subDimension, "&boi=").concat(this.props.boi)).then(res => {
+      this.setState({
+        loading: true
+      });
+
+      _axiosInstance.default.post("".concat(this.props.server, "Svm/project-details"), {
+        clientId: this.props.clientId,
+        languageCode: this.props.languageCode,
+        fiscalYear: this.props.fiscalYear,
+        programId: this.props.programId,
+        dimension: this.props.dimension,
+        subDimension: this.props.subDimension,
+        boi: this.props.boi
+      }).then(res => {
         if (Array.isArray(res.data) && res.data.length) {
           this.setState({
-            projects: [...res.data] // projects: [
+            projects: [...res.data],
+            loading: false // projects: [
             //   ...res.data.map((o) => ({
             //     ...o,
             //     fill1: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
@@ -48,6 +63,9 @@ class ProjectDetailsCard extends _react.Component {
         }
       }).catch(err => {
         console.log(err);
+        this.setState({
+          loading: false
+        });
       });
     });
 
@@ -58,10 +76,9 @@ class ProjectDetailsCard extends _react.Component {
     });
 
     this.state = {
-      clientId: sessionStorage.getItem("clientId"),
-      languageCode: sessionStorage.getItem("languageCode"),
       projects: [],
-      tabValue: 0
+      tabValue: 0,
+      loading: false
     };
   }
 
@@ -77,7 +94,8 @@ class ProjectDetailsCard extends _react.Component {
   render() {
     const {
       projects,
-      tabValue
+      tabValue,
+      loading
     } = this.state;
     const {
       boi
@@ -107,7 +125,7 @@ class ProjectDetailsCard extends _react.Component {
       "aria-controls": "scrollable-auto-tabpanel-".concat(i),
       id: "scrollable-auto-tab-".concat(i),
       key: "project-dimension-".concat(o.project, "-").concat(i)
-    })))), projects.map((o, i) => /*#__PURE__*/_react.default.createElement("div", {
+    })))), !loading ? projects.map((o, i) => /*#__PURE__*/_react.default.createElement("div", {
       role: "tabpanel",
       hidden: tabValue !== i,
       id: "scrollable-auto-tabpanel-".concat(i),
@@ -116,9 +134,12 @@ class ProjectDetailsCard extends _react.Component {
       key: "project-dimension-tabpanel-".concat(o.project, "-").concat(i),
       index: i
     }, tabValue === i && /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, o.projectDescription), /*#__PURE__*/_react.default.createElement(_SVMProjectVerticalChart.default, {
-      dataset: [o.projectTargetValue, o.projectDeliveredValue] // colors={[o.fill1, o.fill2]}
+      dataset: [o.projectTargetValue, o.projectDeliveredValue],
+      unit: o.unit === "USD" ? "$" : o.unit // colors={[o.fill1, o.fill2]}
 
-    })))));
+    })))) : [...new Array(2)].map((o, i) => /*#__PURE__*/_react.default.createElement(_ProjectDetailsSkeleton.default, {
+      key: "project-dimension-skeleton-".concat(i)
+    })));
   }
 
 }
@@ -131,7 +152,9 @@ ProjectDetailsCard.defualtProps = {
   programId: null,
   fiscalYear: null,
   boi: null,
-  onClose: () => {}
+  onClose: () => {},
+  clientId: null,
+  languageCode: null
 };
 ProjectDetailsCard.propTypes = {
   server: _propTypes.default.string,
@@ -140,7 +163,9 @@ ProjectDetailsCard.propTypes = {
   programId: _propTypes.default.string,
   fiscalYear: _propTypes.default.string,
   boi: _propTypes.default.string,
-  onClose: _propTypes.default.func
+  onClose: _propTypes.default.func,
+  clientId: _propTypes.default.string,
+  languageCode: _propTypes.default.string
 };
 var _default = ProjectDetailsCard;
 exports.default = _default;

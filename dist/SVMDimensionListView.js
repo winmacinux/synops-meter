@@ -15,9 +15,9 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _downArrowIcon = _interopRequireDefault(require("./images/downArrow-icon.svg"));
 
-var _DotLabels = _interopRequireDefault(require("./DotLabels"));
-
 var _DimensionDetailsCard = _interopRequireDefault(require("./DimensionDetailsCard"));
+
+var _headerAngleDownIcon = _interopRequireDefault(require("./images/headerAngleDown-icon.svg"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47,7 +47,6 @@ class SVMDimensionListView extends _react.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.expand !== this.props.expand) {
-      console.log(this.props.expand);
       this.setState({
         showExpandedDimension: this.props.expand
       });
@@ -61,17 +60,24 @@ class SVMDimensionListView extends _react.Component {
       programId,
       fiscalYear,
       server,
-      isActive
+      isActive,
+      clientId,
+      languageCode,
+      theme,
+      selectedSubDimension
     } = this.props;
     const {
       showExpandedDimension
     } = this.state;
     return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, showExpandedDimension ? /*#__PURE__*/_react.default.createElement("div", {
       className: "details-view-section mb-3"
-    }, /*#__PURE__*/_react.default.createElement(_DotLabels.default, null), /*#__PURE__*/_react.default.createElement(_DimensionDetailsCard.default, _extends({
+    }, /*#__PURE__*/_react.default.createElement(_DimensionDetailsCard.default, _extends({
       server: server,
       fiscalYear: fiscalYear,
-      programId: programId
+      selectedSubDimension: selectedSubDimension,
+      programId: programId,
+      clientId: clientId,
+      languageCode: languageCode
     }, dimension, {
       onClose: this.toggleExpandedDimensionView
     }))) : /*#__PURE__*/_react.default.createElement("div", {
@@ -79,10 +85,13 @@ class SVMDimensionListView extends _react.Component {
       onClick: this.toggleExpandedDimensionView
     }, /*#__PURE__*/_react.default.createElement("h6", {
       className: "bodytext14-medium-midnight"
-    }, dimensionName, " ", isActive && /*#__PURE__*/_react.default.createElement("img", {
-      className: "float-right",
+    }, dimensionName, " ", isActive && (theme === "1" ? /*#__PURE__*/_react.default.createElement("img", {
+      className: "white_icon float-right mt-1 cursor",
+      src: _headerAngleDownIcon.default
+    }) : /*#__PURE__*/_react.default.createElement("img", {
+      className: "float-right cursor mt-1",
       src: _downArrowIcon.default
-    }))));
+    })))));
   }
 
 }
@@ -97,7 +106,11 @@ SVMDimensionListView.defaultProps = {
   dimensionName: "",
   dimension: null,
   text: "",
-  toggleView: () => {}
+  toggleView: () => {},
+  clientId: null,
+  languageCode: null,
+  theme: null,
+  selectedSubDimension: null
 };
 SVMDimensionListView.propTypes = {
   isActive: _propTypes.default.bool,
@@ -108,5 +121,9 @@ SVMDimensionListView.propTypes = {
   dimensionName: _propTypes.default.string,
   dimension: _propTypes.default.object,
   text: _propTypes.default.string,
-  toggleView: _propTypes.default.func
+  toggleView: _propTypes.default.func,
+  clientId: _propTypes.default.string,
+  languageCode: _propTypes.default.string,
+  theme: _propTypes.default.string,
+  selectedSubDimension: _propTypes.default.number
 };
